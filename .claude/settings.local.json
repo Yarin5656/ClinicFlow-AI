@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(./node_modules/.bin/tailwindcss init:*)",
+      "Bash(node_modules/.bin/prisma.cmd init:*)",
+      "Read(//c/Users/ירין שרייבהנד/Desktop/**)",
+      "Bash(npx create-next-app@14 \"moveeasy israel\" --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --no-git --eslint --use-npm --yes)",
+      "Bash(npm test:*)"
+    ]
+  }
+}

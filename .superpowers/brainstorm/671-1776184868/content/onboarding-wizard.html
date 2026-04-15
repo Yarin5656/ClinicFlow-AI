@@ -1,0 +1,114 @@
+<h2>Onboarding Wizard — מבנה הצעדים</h2>
+<p class="subtitle">6 שאלות קצרות שמייצרות את ה-checklist האישי. איך נראה כל מסך?</p>
+
+<div class="section" style="margin-top:24px;">
+  <div class="label">שאלות ה-wizard (6 צעדים)</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; direction:rtl;">
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px;">
+      <div style="font-weight:700; color:#1e3a5f; margin-bottom:4px;">1 · מתי אתה עובר?</div>
+      <div style="color:#64748b;">תאריך מעבר משוער</div>
+    </div>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px;">
+      <div style="font-weight:700; color:#1e3a5f; margin-bottom:4px;">2 · לאיזו עיר/ישוב?</div>
+      <div style="color:#64748b;">העיר החדשה (לצורך ארנונה)</div>
+    </div>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px;">
+      <div style="font-weight:700; color:#1e3a5f; margin-bottom:4px;">3 · שוכר או בעלים?</div>
+      <div style="color:#64748b;">משפיע על מסמכים נדרשים</div>
+    </div>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px;">
+      <div style="font-weight:700; color:#1e3a5f; margin-bottom:4px;">4 · יש ילדים?</div>
+      <div style="color:#64748b;">מוסיף tasks רישום לגנים/בתי ספר</div>
+    </div>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px;">
+      <div style="font-weight:700; color:#1e3a5f; margin-bottom:4px;">5 · יש רכב?</div>
+      <div style="color:#64748b;">מוסיף tasks לרישוי רכב ורישיון</div>
+    </div>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12px;">
+      <div style="font-weight:700; color:#1e3a5f; margin-bottom:4px;">6 · עובד שכיר/עצמאי?</div>
+      <div style="color:#64748b;">משפיע על tasks רשות המסים</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:28px;">
+  <div class="label">mockup של מסך wizard (צעד אחד)</div>
+
+  <div class="split" style="margin-top:16px; gap:20px;">
+
+    <!-- Option A: Full screen, centered -->
+    <div class="mockup" style="flex:1;">
+      <div class="mockup-header">A — Full-screen centered (clean)</div>
+      <div class="mockup-body" style="direction:rtl; font-family:system-ui; background:#f8fafc; padding:24px; min-height:220px;">
+        <!-- Progress dots -->
+        <div style="display:flex; justify-content:center; gap:6px; margin-bottom:28px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1e3a5f;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#1e3a5f;"></div>
+          <div style="width:24px;height:8px;border-radius:4px;background:#3b82f6;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#e2e8f0;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#e2e8f0;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#e2e8f0;"></div>
+        </div>
+        <div style="text-align:center; margin-bottom:20px;">
+          <div style="font-size:15px; font-weight:700; color:#1e293b; margin-bottom:6px;">האם יש ילדים שיעברו איתך?</div>
+          <div style="font-size:12px; color:#64748b;">נוסיף tasks לרישום לגנים ובתי ספר</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; max-width:220px; margin:0 auto;">
+          <button style="background:#1e3a5f; color:white; border:none; padding:10px; border-radius:8px; font-size:13px; cursor:pointer;">כן, יש ילדים</button>
+          <button style="background:white; color:#1e293b; border:1px solid #e2e8f0; padding:10px; border-radius:8px; font-size:13px; cursor:pointer;">לא</button>
+        </div>
+        <div style="text-align:center; margin-top:16px;">
+          <span style="font-size:11px; color:#94a3b8;">צעד 4 מתוך 6</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option B: Card on light bg with sidebar progress -->
+    <div class="mockup" style="flex:1;">
+      <div class="mockup-header">B — Card + sidebar progress</div>
+      <div class="mockup-body" style="direction:rtl; font-family:system-ui; background:#eff6ff; padding:16px; min-height:220px; display:flex; gap:12px;">
+        <!-- Sidebar -->
+        <div style="width:90px; background:white; border-radius:8px; padding:10px; font-size:10px;">
+          <div style="font-weight:700; color:#1e3a5f; margin-bottom:8px; font-size:11px;">ההתקדמות שלי</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:4px;color:#166534;"><span>✓</span><span>תאריך מעבר</span></div>
+            <div style="display:flex;align-items:center;gap:4px;color:#166534;"><span>✓</span><span>עיר יעד</span></div>
+            <div style="display:flex;align-items:center;gap:4px;color:#166534;"><span>✓</span><span>שוכר/בעלים</span></div>
+            <div style="display:flex;align-items:center;gap:4px;color:#1d4ed8;font-weight:600;"><span>▶</span><span>ילדים</span></div>
+            <div style="display:flex;align-items:center;gap:4px;color:#94a3b8;"><span>○</span><span>רכב</span></div>
+            <div style="display:flex;align-items:center;gap:4px;color:#94a3b8;"><span>○</span><span>תעסוקה</span></div>
+          </div>
+        </div>
+        <!-- Main card -->
+        <div style="flex:1; background:white; border-radius:8px; padding:12px;">
+          <div style="font-size:13px; font-weight:700; color:#1e293b; margin-bottom:6px;">האם יש ילדים שיעברו איתך?</div>
+          <div style="font-size:11px; color:#64748b; margin-bottom:14px;">נוסיף tasks לרישום לגנים ובתי ספר</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button style="background:#1e3a5f; color:white; border:none; padding:8px; border-radius:6px; font-size:12px;">כן, יש ילדים</button>
+            <button style="background:white; color:#1e293b; border:1px solid #e2e8f0; padding:8px; border-radius:6px; font-size:12px;">לא</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="options" style="margin-top:20px;">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Full-screen centered</h3>
+      <p>נקי, ממוקד, מינימליסטי. progress dots בלבד. מתאים למובייל. פחות context בכל רגע נתון.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Card + sidebar progress</h3>
+      <p>המשתמש רואה תמיד את כל ה-steps ואיפה הוא עומד. יותר context, קצת פחות נקי.</p>
+    </div>
+  </div>
+</div>
+
+<p style="margin-top:14px; color:#64748b; font-size:13px; text-align:center;">לחץ/י לבחירה — או ספר/י לי בטרמינל</p>

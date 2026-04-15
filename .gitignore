@@ -1,0 +1,16 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+# Local file uploads
+/storage
+/storage-test
+
+# Env
+.env.local
+.env.*.local
+
+# Test outputs
+coverage/
