@@ -1,12 +1,169 @@
-// Prisma schema — MoveEasy Israel
-// Full data model will be added in Phase 2. This is a Phase 1 stub
-// that generates an empty PrismaClient so the app can compile.
+// MoveEasy Israel — Data Model
+// 9 models covering users, households, move profiles,
+// workflows/steps, tasks, documents, reminders, and editable content.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  // SQLite for local dev (zero external dependencies).
+  // Production will use "postgresql" — only this line changes.
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+// ─── Users & Auth ─────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String?
+  isAdmin      Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  household  Household?
+  tasks      Task[]
+  documents  Document[]
+  reminders  Reminder[]
+}
+
+// ─── Move Context ─────────────────────────────────────────────────
+
+model Household {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  fromAddress String?
+  toAddress   String?
+  moveDate    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moveProfile MoveProfile?
+  tasks       Task[]
+}
+
+model MoveProfile {
+  id          String   @id @default(cuid())
+  householdId String   @unique
+  // answers shape: {
+  //   moveDate: string (ISO),
+  //   targetCity: string,
+  //   tenantType: "renter" | "owner",
+  //   hasChildren: boolean,
+  //   hasCar: boolean,
+  //   employmentType: "employee" | "self-employed" | "other"
+  // }
+  answers   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+}
+
+// ─── Workflow Definitions ─────────────────────────────────────────
+
+model Workflow {
+  id                String         @id @default(cuid())
+  slug              String         @unique
+  title             String
+  description       String
+  triggerConditions Json?
+  isActive          Boolean        @default(true)
+  order             Int            @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  steps WorkflowStep[]
+}
+
+model WorkflowStep {
+  id          String @id @default(cuid())
+  workflowId  String
+  order       Int
+  title       String
+  description String
+  // requiredDocuments: [{ name, description, required }]
+  requiredDocuments Json?
+  // externalLinks: [{ label, url, category: "official"|"info" }]
+  externalLinks Json?
+  helperNotes   String?
+  // completionRules: { requiresDocuments?: boolean, autoComplete?: boolean }
+  completionRules Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  tasks    Task[]
+}
+
+// ─── User Tasks ───────────────────────────────────────────────────
+
+// TaskStatus stored as string (SQLite has no enums).
+// Valid values: "PENDING" | "IN_PROGRESS" | "DONE" | "SKIPPED"
+// Enforced by Zod at the API boundary and by TypeScript types.
+
+model Task {
+  id             String     @id @default(cuid())
+  userId         String
+  householdId    String
+  workflowStepId String
+  status         String     @default("PENDING")
+  dueDate        DateTime?
+  completedAt    DateTime?
+  notes          String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household    Household    @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  workflowStep WorkflowStep @relation(fields: [workflowStepId], references: [id])
+  documents    Document[]
+  reminders    Reminder[]
+
+  @@unique([userId, workflowStepId])
+}
+
+// ─── Documents ────────────────────────────────────────────────────
+
+model Document {
+  id          String   @id @default(cuid())
+  userId      String
+  taskId      String?
+  filename    String
+  storagePath String
+  mimeType    String
+  sizeBytes   Int
+  uploadedAt  DateTime @default(now())
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+}
+
+// ─── Reminders (in-app only for MVP) ──────────────────────────────
+
+model Reminder {
+  id          String   @id @default(cuid())
+  userId      String
+  taskId      String?
+  message     String
+  scheduledAt DateTime
+  seen        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+}
+
+// ─── Admin-editable Content ───────────────────────────────────────
+
+model ContentBlock {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  locale    String   @default("he")
+  updatedAt DateTime @updatedAt
 }

@@ -15,7 +15,14 @@
       "Bash(curl -s http://localhost:3000)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/dashboard)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/login)",
-      "Bash(curl -s http://localhost:3000/api/auth/providers)"
+      "Bash(curl -s http://localhost:3000/api/auth/providers)",
+      "Bash(pg_isready -h localhost -p 5432)",
+      "Bash(docker --version)",
+      "Bash(curl -sL -X POST http://localhost:3001/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"Test User\",\"email\":\"test@example.com\",\"password\":\"password123\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -sL -X POST http://localhost:3001/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"Dup\",\"email\":\"test@example.com\",\"password\":\"password123\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -sL -X POST http://localhost:3001/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"x\",\"email\":\"bad\",\"password\":\"1\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:3001/register)",
+      "Bash(curl -s http://localhost:3001/login)"
     ]
   }
 }
