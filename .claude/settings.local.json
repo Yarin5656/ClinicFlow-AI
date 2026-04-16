@@ -33,7 +33,11 @@
       "Bash(curl -s -c /tmp/c2.txt http://localhost:3000/api/auth/csrf)",
       "Bash(curl -sL -X POST http://localhost:3000/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"Dana SE\",\"email\":\"dana@test.com\",\"password\":\"password123\"}' -w \" HTTP:%{http_code}\\\\n\")",
       "Bash(curl -s -c /tmp/c3.txt http://localhost:3000/api/auth/csrf)",
-      "Bash(curl -s -c /tmp/c5.txt http://localhost:3000/api/auth/csrf)"
+      "Bash(curl -s -c /tmp/c5.txt http://localhost:3000/api/auth/csrf)",
+      "Bash(curl -s -c /tmp/c.txt http://localhost:3001/api/auth/csrf)",
+      "Bash(curl -s -b /tmp/c.txt -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/dashboard)",
+      "Bash(curl -s -b /tmp/c.txt http://localhost:3001/tasks?workflow=address-change -o /tmp/tasks.html)",
+      "Read(//tmp/**)"
     ]
   }
 }
