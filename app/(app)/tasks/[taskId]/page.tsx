@@ -10,6 +10,7 @@ import { StatusToggle } from "@/components/tasks/StatusToggle"
 import { TaskNotes } from "@/components/tasks/TaskNotes"
 import { UploadZone } from "@/components/documents/UploadZone"
 import { DocumentList } from "@/components/documents/DocumentList"
+import { CreateReminderForm } from "@/components/reminders/CreateReminderForm"
 import type { TaskStatus, RequiredDocument, ExternalLink } from "@/types"
 
 interface Props {
@@ -170,6 +171,19 @@ export default async function TaskDetailPage({ params }: Props) {
               </p>
             </div>
           )}
+
+          {/* Create reminder for this task */}
+          <Card padding="lg" className="flex flex-col gap-3">
+            <div>
+              <h3 className="font-display text-base font-medium text-[var(--color-text)]">
+                תזכורת למשימה
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                נודיע לך בפעמון בכותרת כשיגיע הזמן
+              </p>
+            </div>
+            <CreateReminderForm taskId={task.id} suggestion={step.title} />
+          </Card>
 
           {/* User notes (auto-save) */}
           <Card padding="lg">
