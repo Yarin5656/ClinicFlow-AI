@@ -22,7 +22,10 @@
       "Bash(curl -sL -X POST http://localhost:3001/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"Dup\",\"email\":\"test@example.com\",\"password\":\"password123\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
       "Bash(curl -sL -X POST http://localhost:3001/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"x\",\"email\":\"bad\",\"password\":\"1\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
       "Bash(curl -s http://localhost:3001/register)",
-      "Bash(curl -s http://localhost:3001/login)"
+      "Bash(curl -s http://localhost:3001/login)",
+      "Bash(tasklist)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(npx tsx:*)"
     ]
   }
 }

@@ -86,6 +86,9 @@ model WorkflowStep {
   order       Int
   title       String
   description String
+  // Step-level trigger conditions, e.g. { "employmentType": "self-employed" }.
+  // Evaluated by the workflow engine in addition to the parent workflow's conditions.
+  triggerConditions Json?
   // requiredDocuments: [{ name, description, required }]
   requiredDocuments Json?
   // externalLinks: [{ label, url, category: "official"|"info" }]

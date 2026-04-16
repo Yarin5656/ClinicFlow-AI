@@ -1,23 +1,31 @@
 // Workflow definition shape (matches workflow JSON files)
+export interface RequiredDocument {
+  name: string
+  description: string
+  required: boolean
+}
+
+export interface ExternalLink {
+  label: string
+  url: string
+  category: "official" | "info"
+}
+
+export interface CompletionRules {
+  requiresDocuments?: boolean
+  autoComplete?: boolean
+}
+
 export interface WorkflowStepDefinition {
   order: number
   title: string
   description: string
-  requiredDocuments?: {
-    name: string
-    description: string
-    required: boolean
-  }[]
-  externalLinks?: {
-    label: string
-    url: string
-    category: "official" | "info"
-  }[]
+  /** Step-level conditions (AND-ed with workflow conditions). Omit or {} = always include. */
+  triggerConditions?: Record<string, unknown>
+  requiredDocuments?: RequiredDocument[]
+  externalLinks?: ExternalLink[]
   helperNotes?: string
-  completionRules?: {
-    requiresDocuments?: boolean
-    autoComplete?: boolean
-  }
+  completionRules?: CompletionRules
 }
 
 export interface WorkflowDefinition {

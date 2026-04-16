@@ -1,0 +1,46 @@
+{
+  "slug": "tax-authority",
+  "title": "רשות המסים",
+  "description": "עדכון כתובת במס הכנסה, במע\"מ (לעצמאים) ואצל המעביד (לשכירים).",
+  "order": 3,
+  "triggerConditions": {},
+  "steps": [
+    {
+      "order": 1,
+      "title": "עדכון כתובת באזור האישי של מס הכנסה",
+      "description": "עדכון הכתובת במערכת המקוונת של רשות המסים — חשוב לקבלת מכתבים, דוחות שנתיים והחזרי מס.",
+      "requiredDocuments": [],
+      "externalLinks": [
+        { "label": "האזור האישי — רשות המסים", "url": "https://www.misim.gov.il", "category": "official" },
+        { "label": "הגשת בקשה להחזר מס", "url": "https://www.gov.il/he/service/refund_claim_individual", "category": "info" }
+      ],
+      "helperNotes": "הכניסה דורשת תעודת זהות, תאריך הנפקה, וסיסמה או כניסה בכרטיס חכם. העדכון מיידי.",
+      "completionRules": {}
+    },
+    {
+      "order": 2,
+      "title": "הודעה למעביד על הכתובת החדשה",
+      "description": "יש לעדכן את מחלקת השכר של המעביד כדי שתלוש המשכורת, טופס 106 ומכתבי הודעה יגיעו לכתובת הנכונה.",
+      "triggerConditions": { "employmentType": "employee" },
+      "requiredDocuments": [],
+      "externalLinks": [],
+      "helperNotes": "לרוב מבוצע דרך מערכת השכר של החברה (AVUS, Hilan, Shiklulit וכו'). שמור אישור מהמעביד שהכתובת עודכנה.",
+      "completionRules": {}
+    },
+    {
+      "order": 3,
+      "title": "עדכון כתובת במע\"מ",
+      "triggerConditions": { "employmentType": "self-employed" },
+      "description": "לעוסקים מורשים ועוסקים פטורים — חובה לעדכן את כתובת העסק במע\"מ כדי לא לקבל קנסות על מכתבים שלא הגיעו.",
+      "requiredDocuments": [
+        { "name": "תעודת רישום לעוסק", "description": "צילום תעודת העוסק", "required": true },
+        { "name": "אסמכתא למיקום העסק", "description": "חוזה שכירות למשרד / אישור על עבודה מהבית", "required": false }
+      ],
+      "externalLinks": [
+        { "label": "עדכון פרטים במע\"מ", "url": "https://www.gov.il/he/service/vat_details_update", "category": "official" }
+      ],
+      "helperNotes": "אם העסק פועל מהבית הכתובת של העסק וכתובת המגורים יכולות להיות זהות. שים לב שהכתובת שתדווח תופיע על חשבוניות מס.",
+      "completionRules": { "requiresDocuments": true }
+    }
+  ]
+}

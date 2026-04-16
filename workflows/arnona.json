@@ -1,0 +1,57 @@
+{
+  "slug": "arnona",
+  "title": "ארנונה עירונית",
+  "description": "הצהרת מעבר בעירייה החדשה, ביטול ארנונה בישנה, ובדיקת זכאות להנחות.",
+  "order": 2,
+  "triggerConditions": {},
+  "steps": [
+    {
+      "order": 1,
+      "title": "הגשת הצהרת מעבר בעירייה החדשה",
+      "description": "יש להגיש הצהרה לעירייה של הכתובת החדשה תוך 30 ימים ממועד המעבר. זהו הצעד הקריטי ביותר בתהליך הארנונה.",
+      "requiredDocuments": [
+        { "name": "חוזה שכירות או נסח טאבו", "description": "מסמך המוכיח את הזכות להתגורר בכתובת החדשה", "required": true },
+        { "name": "תעודת זהות", "description": "צילום ת.ז של כל הדיירים הרשומים (מעל גיל 18)", "required": true },
+        { "name": "חוזה יציאה מהדירה הקודמת", "description": "אם שכרת — אישור סיום שכירות", "required": false }
+      ],
+      "externalLinks": [
+        { "label": "חיפוש עירייה לפי עיר", "url": "https://www.gov.il/he/departments/general/local_authorities_list", "category": "info" }
+      ],
+      "helperNotes": "לכל עירייה יש טופס משלה ותהליך שונה. חלק מהעיריות מאפשרות הגשה מקוונת, אחרות דורשות הגעה פיזית. חשוב לשמור את אישור הקבלה.",
+      "completionRules": { "requiresDocuments": true }
+    },
+    {
+      "order": 2,
+      "title": "ביטול ארנונה בעירייה הישנה",
+      "description": "יש לבטל את חיוב הארנונה בכתובת הקודמת כדי לא להמשיך לשלם עליה. חשוב במיוחד לשוכרים.",
+      "requiredDocuments": [
+        { "name": "אסמכתא לתאריך המעבר", "description": "חוזה שכירות חדש או אישור סיום שכירות ישן", "required": true }
+      ],
+      "externalLinks": [],
+      "helperNotes": "חלק מהעיריות ידרשו להחזיר תשלומים ששולמו עבור התקופה שאחרי המעבר. שמור קבלות והודעת ביטול.",
+      "completionRules": { "requiresDocuments": true }
+    },
+    {
+      "order": 3,
+      "title": "בדיקת זכאות להנחות ארנונה",
+      "description": "במעבר לעיר חדשה כדאי לבדוק אם מגיעות הנחות: סטודנט, חייל בשירות, מקבל קצבה, חד-הורי, ועוד.",
+      "requiredDocuments": [
+        { "name": "אסמכתאות למעמד", "description": "תעודת סטודנט / תעודת מילואים / אישור מוסד ביטוח לאומי — לפי הסוג", "required": false }
+      ],
+      "externalLinks": [
+        { "label": "תקנות הנחות ארנונה", "url": "https://www.gov.il/he/departments/policies/arnona_discounts_regulations", "category": "info" }
+      ],
+      "helperNotes": "אפשר להגיש בקשת הנחה רטרואקטיבית לתחילת שנת המס. לכל עירייה יש תקנון משלה — בדוק באתר העירייה שלך.",
+      "completionRules": {}
+    },
+    {
+      "order": 4,
+      "title": "רישום לשירותים עירוניים",
+      "description": "רישום לספרייה העירונית, לחוגים, לשירותי רווחה ולשירותי תרבות של העירייה החדשה.",
+      "requiredDocuments": [],
+      "externalLinks": [],
+      "helperNotes": "שירותים רבים ניתנים רק לתושבי העיר. חלקם אפשריים גם לפני עדכון רשמי של הכתובת — תלוי בעירייה.",
+      "completionRules": {}
+    }
+  ]
+}

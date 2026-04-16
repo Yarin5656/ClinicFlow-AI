@@ -1,0 +1,73 @@
+{
+  "slug": "address-change",
+  "title": "שינוי כתובת רשמית",
+  "description": "עדכון כתובת המגורים הרשמית במשרד הפנים, בגופי הממשלה ובגופים פיננסיים.",
+  "order": 1,
+  "triggerConditions": {},
+  "steps": [
+    {
+      "order": 1,
+      "title": "הגשת בקשה לשינוי כתובת במשרד הפנים",
+      "description": "עדכון הכתובת הרשמית במרשם האוכלוסין. ניתן לבצע אונליין ללא ביקור פיזי.",
+      "requiredDocuments": [
+        { "name": "תעודת זהות בתוקף", "description": "שני צדי הת.ז והספח", "required": true },
+        { "name": "אסמכתא למגורים חדשים", "description": "חוזה שכירות עם אישור נוטריון / חשבון חשמל / נסח טאבו", "required": true }
+      ],
+      "externalLinks": [
+        { "label": "הגשה מקוונת — gov.il", "url": "https://www.gov.il/he/service/change_address", "category": "official" },
+        { "label": "מידע על השירות", "url": "https://www.gov.il/he/departments/topics/address_change", "category": "info" }
+      ],
+      "helperNotes": "עיבוד הבקשה אורך עד 7 ימי עסקים. תקבל SMS לאחר האישור. שים לב: הכתובת החדשה תופיע בת.ז רק לאחר הדפסה מחדש.",
+      "completionRules": { "requiresDocuments": true }
+    },
+    {
+      "order": 2,
+      "title": "עדכון כתובת בביטוח לאומי",
+      "description": "עדכון הכתובת באזור האישי של ביטוח לאומי. חשוב כדי שמכתבים, תלושי קצבה וחבילות של המוסד יגיעו לכתובת החדשה.",
+      "requiredDocuments": [],
+      "externalLinks": [
+        { "label": "אזור אישי — ביטוח לאומי", "url": "https://www.btl.gov.il/benefits/SubjectAndForms/Pages/PersonalArea.aspx", "category": "official" }
+      ],
+      "helperNotes": "העדכון מקוון ומיידי. נדרש כרטיס חכם או כניסה עם סיסמה חד-פעמית.",
+      "completionRules": {}
+    },
+    {
+      "order": 3,
+      "title": "עדכון כתובת בקופת החולים",
+      "description": "עדכון הכתובת בקופה שלך (כללית / מכבי / לאומית / מאוחדת). משפיע על שיוך למרפאה הקרובה ועל הקצאת רופא משפחה.",
+      "requiredDocuments": [],
+      "externalLinks": [
+        { "label": "כללית — עדכון פרטים", "url": "https://www.clalit.co.il", "category": "info" },
+        { "label": "מכבי — עדכון פרטים", "url": "https://www.maccabi4u.co.il", "category": "info" },
+        { "label": "לאומית — עדכון פרטים", "url": "https://www.leumit.co.il", "category": "info" },
+        { "label": "מאוחדת — עדכון פרטים", "url": "https://www.meuhedet.co.il", "category": "info" }
+      ],
+      "helperNotes": "רוב הקופות מאפשרות עדכון באפליקציה או באתר. ייתכן שתידרש לעבור למרפאה חדשה — בדוק האם הרופא המטפל נמצא באותה מרפאה.",
+      "completionRules": {}
+    },
+    {
+      "order": 4,
+      "title": "עדכון כתובת בבנק",
+      "description": "הבנק שולח מכתבים רשמיים, תלושי משכורת ומסמכי מס לכתובת הרשומה. חשוב לעדכן מיד כדי לא לפספס התראות חשובות.",
+      "requiredDocuments": [
+        { "name": "אסמכתא לכתובת החדשה", "description": "חשבון חשמל / חוזה / חשבונית מים", "required": false }
+      ],
+      "externalLinks": [],
+      "helperNotes": "ברוב הבנקים ניתן לעדכן דרך האפליקציה או האזור האישי באתר. בנקים מסוימים דורשים גם אישור מבעל החשבון המשותף (אם יש).",
+      "completionRules": {}
+    },
+    {
+      "order": 5,
+      "title": "עדכון כתובת ברישיון הנהיגה",
+      "description": "עדכון הכתובת ברישיון הנהיגה ובמסמכי הרכב. חובה על פי חוק — אי-עדכון עלול להוביל לקנסות אם מתקבלות הודעות שלא מגיעות.",
+      "requiredDocuments": [
+        { "name": "רישיון נהיגה בתוקף", "description": "צילום הרישיון", "required": true }
+      ],
+      "externalLinks": [
+        { "label": "עדכון כתובת ברישיון — gov.il", "url": "https://www.gov.il/he/service/driver_licence_address_update", "category": "official" }
+      ],
+      "helperNotes": "חייבים לעדכן תוך 30 יום מהמעבר. העדכון מקוון, ללא צורך במסמכים פיזיים נוספים. הרישיון הפיזי יישלח בדואר תוך 14 ימים.",
+      "completionRules": { "requiresDocuments": true }
+    }
+  ]
+}
