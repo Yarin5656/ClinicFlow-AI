@@ -37,7 +37,8 @@
       "Bash(curl -s -c /tmp/c.txt http://localhost:3001/api/auth/csrf)",
       "Bash(curl -s -b /tmp/c.txt -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/dashboard)",
       "Bash(curl -s -b /tmp/c.txt http://localhost:3001/tasks?workflow=address-change -o /tmp/tasks.html)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(PORT=3002 npx tsx scripts/test-upload.ts \"cmo1o34du0006vvckrtiglad8\")"
     ]
   }
 }
