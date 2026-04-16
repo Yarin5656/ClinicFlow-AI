@@ -25,7 +25,15 @@
       "Bash(curl -s http://localhost:3001/login)",
       "Bash(tasklist)",
       "Bash(taskkill //F //IM node.exe)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(mkdir -p \"app/onboarding\")",
+      "Bash(mv \"app/\\(app\\)/onboarding/page.tsx\" \"app/onboarding/page.tsx\")",
+      "Bash(rmdir \"app/\\(app\\)/onboarding\")",
+      "Bash(curl -sL -X POST http://localhost:3000/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"יוסי שכיר\",\"email\":\"yossi@test.com\",\"password\":\"password123\"}' -w \"\\\\nHTTP:%{http_code}\\\\n\")",
+      "Bash(curl -s -c /tmp/c2.txt http://localhost:3000/api/auth/csrf)",
+      "Bash(curl -sL -X POST http://localhost:3000/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"Dana SE\",\"email\":\"dana@test.com\",\"password\":\"password123\"}' -w \" HTTP:%{http_code}\\\\n\")",
+      "Bash(curl -s -c /tmp/c3.txt http://localhost:3000/api/auth/csrf)",
+      "Bash(curl -s -c /tmp/c5.txt http://localhost:3000/api/auth/csrf)"
     ]
   }
 }
