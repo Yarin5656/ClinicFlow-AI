@@ -39,20 +39,25 @@ export function filterApplicableSteps(
  * 3. For each workflow, skip steps whose step-level triggerConditions fail.
  * 4. Upsert one Task per (userId, workflowStepId) — the @@unique constraint
  *    makes re-runs idempotent and preserves existing task status.
+ * 5. For each task with a deadline, create one automatic Reminder scheduled
+ *    one week before the deadline (or immediately if deadline already passed).
  */
 export async function generateTasksForUser(
   userId: string,
   householdId: string,
   answers: WizardAnswers
-): Promise<{ created: number; kept: number }> {
+): Promise<{ created: number; kept: number; reminders: number }> {
   const workflows = await prisma.workflow.findMany({
     where: { isActive: true },
     include: { steps: { orderBy: { order: "asc" } } },
     orderBy: { order: "asc" },
   })
 
+  const moveDate = answers.moveDate ? new Date(answers.moveDate) : null
+
   let created = 0
   let kept = 0
+  let reminders = 0
 
   for (const workflow of workflows) {
     const workflowConditions = (workflow.triggerConditions ?? {}) as Record<string, unknown>
@@ -66,10 +71,11 @@ export async function generateTasksForUser(
         where: { userId_workflowStepId: { userId, workflowStepId: step.id } },
       })
 
+      let task = existing
       if (existing) {
         kept += 1
       } else {
-        await prisma.task.create({
+        task = await prisma.task.create({
           data: {
             userId,
             householdId,
@@ -79,8 +85,34 @@ export async function generateTasksForUser(
         })
         created += 1
       }
+
+      // Auto-reminder: 7 days before the regulatory deadline.
+      if (step.deadlineDaysAfterMove != null && moveDate && task) {
+        const deadline = new Date(moveDate)
+        deadline.setDate(deadline.getDate() + step.deadlineDaysAfterMove)
+        const remindAt = new Date(deadline)
+        remindAt.setDate(remindAt.getDate() - 7)
+
+        const already = await prisma.reminder.findFirst({
+          where: { userId, taskId: task.id, isAutomatic: true },
+          select: { id: true },
+        })
+
+        if (!already) {
+          await prisma.reminder.create({
+            data: {
+              userId,
+              taskId: task.id,
+              message: `דדליין ל${step.title.replace(/^\s*/, "")} — עוד 7 ימים`,
+              scheduledAt: remindAt,
+              isAutomatic: true,
+            },
+          })
+          reminders += 1
+        }
+      }
     }
   }
 
-  return { created, kept }
+  return { created, kept, reminders }
 }

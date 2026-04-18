@@ -18,6 +18,7 @@
         { "label": "מידע על השירות", "url": "https://www.gov.il/he/departments/topics/address_change", "category": "info" }
       ],
       "helperNotes": "עיבוד הבקשה אורך עד 7 ימי עסקים. תקבל SMS לאחר האישור. שים לב: הכתובת החדשה תופיע בת.ז רק לאחר הדפסה מחדש.",
+      "deadlineDaysAfterMove": 60,
       "completionRules": { "requiresDocuments": true }
     },
     {
@@ -67,6 +68,7 @@
         { "label": "עדכון כתובת ברישיון — gov.il", "url": "https://www.gov.il/he/service/driver_licence_address_update", "category": "official" }
       ],
       "helperNotes": "חייבים לעדכן תוך 30 יום מהמעבר. העדכון מקוון, ללא צורך במסמכים פיזיים נוספים. הרישיון הפיזי יישלח בדואר תוך 14 ימים.",
+      "deadlineDaysAfterMove": 30,
       "completionRules": { "requiresDocuments": true }
     }
   ]

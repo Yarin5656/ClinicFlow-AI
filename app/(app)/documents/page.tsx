@@ -18,7 +18,14 @@ export default async function DocumentsPage() {
 
   const documents = await prisma.document.findMany({
     where: { userId },
-    include: {
+    select: {
+      id: true,
+      filename: true,
+      mimeType: true,
+      sizeBytes: true,
+      uploadedAt: true,
+      docType: true,
+      extractedFields: true,
       task: {
         select: {
           id: true,
@@ -34,17 +41,27 @@ export default async function DocumentsPage() {
     orderBy: { uploadedAt: "desc" },
   })
 
+  // Normalize extractedFields into a plain record so the DocumentList type matches.
+  const normalizedDocs = documents.map((d) => ({
+    ...d,
+    extractedFields:
+      d.extractedFields && typeof d.extractedFields === "object" && !Array.isArray(d.extractedFields)
+        ? (d.extractedFields as Record<string, unknown>)
+        : null,
+  }))
+
   // Group by task (or "general" if no task)
+  type NormalizedDoc = (typeof normalizedDocs)[number]
   type Group = {
     key: string
     title: string
     subtitle: string | null
     taskId: string | null
-    docs: typeof documents
+    docs: NormalizedDoc[]
   }
   const groupMap = new Map<string, Group>()
 
-  for (const doc of documents) {
+  for (const doc of normalizedDocs) {
     const key = doc.task?.id ?? "general"
     if (!groupMap.has(key)) {
       groupMap.set(key, {

@@ -40,6 +40,7 @@
         { "label": "עדכון פרטים במע\"מ", "url": "https://www.gov.il/he/service/vat_details_update", "category": "official" }
       ],
       "helperNotes": "אם העסק פועל מהבית הכתובת של העסק וכתובת המגורים יכולות להיות זהות. שים לב שהכתובת שתדווח תופיע על חשבוניות מס.",
+      "deadlineDaysAfterMove": 30,
       "completionRules": { "requiresDocuments": true }
     }
   ]

@@ -11,6 +11,7 @@ export const config = {
     "/tasks/:path*",
     "/documents/:path*",
     "/reminders/:path*",
+    "/settings/:path*",
     "/admin/:path*",
   ],
 }

@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { prisma } from "@/lib/db/prisma"
 import { getStorageProvider } from "@/lib/storage"
+import { getOCRProvider } from "@/lib/ocr"
+import { Prisma } from "@prisma/client"
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
 const ALLOWED_MIME = new Set([
@@ -29,6 +31,7 @@ export async function POST(req: NextRequest) {
 
   const file = formData.get("file")
   const taskId = formData.get("taskId")
+  const docType = formData.get("docType")
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "לא התקבל קובץ" }, { status: 400 })
@@ -63,6 +66,11 @@ export async function POST(req: NextRequest) {
   const storage = getStorageProvider()
   const storagePath = await storage.upload(buffer, file.name, file.type, userId)
 
+  // Best-effort OCR. Provider may return null fields — UI falls back to manual.
+  const resolvedDocType = typeof docType === "string" && docType.length > 0 ? docType : null
+  const ocr = getOCRProvider()
+  const ocrResult = await ocr.extract(buffer, file.type, resolvedDocType).catch(() => null)
+
   const doc = await prisma.document.create({
     data: {
       userId,
@@ -71,6 +79,10 @@ export async function POST(req: NextRequest) {
       storagePath,
       mimeType: file.type,
       sizeBytes: file.size,
+      docType: resolvedDocType,
+      extractedFields: ocrResult?.fields
+        ? (ocrResult.fields as unknown as Prisma.InputJsonValue)
+        : Prisma.JsonNull,
     },
     select: {
       id: true,
@@ -79,6 +91,8 @@ export async function POST(req: NextRequest) {
       sizeBytes: true,
       uploadedAt: true,
       taskId: true,
+      docType: true,
+      extractedFields: true,
     },
   })
 

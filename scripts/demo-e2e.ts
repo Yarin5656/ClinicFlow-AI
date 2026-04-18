@@ -108,11 +108,16 @@ async function main() {
   })
   log("Reminder create", rem.status === 201, `HTTP ${rem.status}`)
 
-  // 8. Verify reminders list shows it
+  // 8. Verify reminders list includes both the manual one + any auto-generated
+  //    deadline reminders (Quick Win 2 creates these during onboarding).
   const list = await fetch(`${BASE}/api/reminders`, { headers: { Cookie: cookie } })
-  const listBody = await list.json() as { reminders: unknown[] }
-  log("Reminders list", list.status === 200 && listBody.reminders.length === 1,
-      `${listBody.reminders.length} תזכורות`)
+  const listBody = await list.json() as {
+    reminders: { message: string; isAutomatic?: boolean }[]
+  }
+  const autoCount = listBody.reminders.filter((r) => r.isAutomatic).length
+  const manualCount = listBody.reminders.length - autoCount
+  log("Reminders list", list.status === 200 && manualCount >= 1,
+      `${manualCount} ידניות + ${autoCount} דדליין רשמי`)
 
   console.log("\n🎉 Core MVP flow verified end-to-end")
 }

@@ -8,6 +8,7 @@ const navItems = [
   { href: "/dashboard", label: "לוח בקרה", icon: "⊞" },
   { href: "/documents", label: "מסמכים", icon: "📄" },
   { href: "/reminders", label: "תזכורות", icon: "🔔" },
+  { href: "/settings",  label: "הפרופיל שלי", icon: "👤" },
 ]
 
 export function Sidebar() {

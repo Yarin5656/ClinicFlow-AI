@@ -10,6 +10,7 @@ export interface ReminderItemData {
   message: string
   scheduledAt: Date | string
   seen: boolean
+  isAutomatic?: boolean
   task: {
     id: string
     workflowStep: { title: string }
@@ -90,8 +91,15 @@ export function ReminderItem({ reminder }: Props) {
       </div>
 
       <div className="flex-1 min-w-0">
-        <div className={cn("text-sm font-medium mb-1", reminder.seen && "line-through text-muted-foreground")}>
-          {reminder.message}
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
+          <span className={cn("text-sm font-medium", reminder.seen && "line-through text-muted-foreground")}>
+            {reminder.message}
+          </span>
+          {reminder.isAutomatic && (
+            <span className="inline-flex items-center text-[10px] uppercase tracking-wide font-semibold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">
+              דדליין רשמי
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2 flex-wrap text-xs text-muted-foreground">
           <span className={cn(isOverdue && "font-semibold text-[var(--color-warning)]")}>

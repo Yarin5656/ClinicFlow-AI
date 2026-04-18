@@ -11,6 +11,7 @@ import { TaskNotes } from "@/components/tasks/TaskNotes"
 import { UploadZone } from "@/components/documents/UploadZone"
 import { DocumentList } from "@/components/documents/DocumentList"
 import { CreateReminderForm } from "@/components/reminders/CreateReminderForm"
+import { CopyField } from "@/components/ui/CopyField"
 import type { TaskStatus, RequiredDocument, ExternalLink } from "@/types"
 
 interface Props {
@@ -22,27 +23,40 @@ export default async function TaskDetailPage({ params }: Props) {
   const userId = (session?.user as { id?: string } | undefined)?.id
   if (!userId) redirect("/login")
 
-  const task = await prisma.task.findUnique({
-    where: { id: params.taskId },
-    include: {
-      workflowStep: {
-        include: { workflow: { select: { slug: true, title: true } } },
-      },
-      documents: {
-        select: {
-          id: true,
-          filename: true,
-          mimeType: true,
-          sizeBytes: true,
-          uploadedAt: true,
+  const [task, userProfile, household] = await Promise.all([
+    prisma.task.findUnique({
+      where: { id: params.taskId },
+      include: {
+        workflowStep: {
+          include: { workflow: { select: { slug: true, title: true } } },
         },
-        orderBy: { uploadedAt: "desc" },
+        documents: {
+          select: {
+            id: true,
+            filename: true,
+            mimeType: true,
+            sizeBytes: true,
+            uploadedAt: true,
+          },
+          orderBy: { uploadedAt: "desc" },
+        },
       },
-    },
-  })
+    }),
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, idNumber: true, phoneNumber: true, birthDate: true },
+    }),
+    prisma.household.findUnique({
+      where: { userId },
+      select: { toAddress: true, fromAddress: true },
+    }),
+  ])
 
   if (!task) notFound()
   if (task.userId !== userId) redirect("/dashboard")
+
+  const formatBirthDate = (d: Date | null): string | null =>
+    d ? d.toLocaleDateString("he-IL") : null
 
   const step = task.workflowStep
   const workflow = step.workflow
@@ -80,6 +94,31 @@ export default async function TaskDetailPage({ params }: Props) {
               <StatusBadge status={task.status as TaskStatus} className="mt-1" />
             </div>
             <StatusToggle taskId={task.id} initialStatus={task.status as TaskStatus} />
+          </Card>
+
+          {/* Pre-filled profile data for quick copying into gov forms */}
+          <Card padding="lg" className="flex flex-col gap-3">
+            <div className="flex items-baseline justify-between gap-2 flex-wrap">
+              <div>
+                <h3 className="font-display text-base font-medium text-[var(--color-text)]">
+                  הפרטים שלך להעתקה מהירה
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  לחץ על שדה כדי להעתיק. חסר משהו?{" "}
+                  <Link href="/settings" className="text-accent hover:underline underline-offset-2">
+                    השלם בפרופיל
+                  </Link>
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <CopyField label="שם מלא" value={userProfile?.name} />
+              <CopyField label="ת.ז" value={userProfile?.idNumber} />
+              <CopyField label="טלפון" value={userProfile?.phoneNumber} />
+              <CopyField label="תאריך לידה" value={formatBirthDate(userProfile?.birthDate ?? null)} />
+              <CopyField label="כתובת חדשה" value={household?.toAddress} />
+              <CopyField label="כתובת קודמת" value={household?.fromAddress} />
+            </div>
           </Card>
 
           {/* Required documents checklist */}

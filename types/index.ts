@@ -25,6 +25,8 @@ export interface WorkflowStepDefinition {
   requiredDocuments?: RequiredDocument[]
   externalLinks?: ExternalLink[]
   helperNotes?: string
+  /** Regulatory deadline in days after move date. Used to auto-create reminders. */
+  deadlineDaysAfterMove?: number
   completionRules?: CompletionRules
 }
 

@@ -84,6 +84,7 @@ async function seedWorkflows() {
           title: step.title,
           description: step.description,
           triggerConditions: asJson(step.triggerConditions ?? {}),
+          deadlineDaysAfterMove: step.deadlineDaysAfterMove ?? null,
           requiredDocuments: asJson(step.requiredDocuments ?? []),
           externalLinks: asJson(step.externalLinks ?? []),
           helperNotes: step.helperNotes ?? null,

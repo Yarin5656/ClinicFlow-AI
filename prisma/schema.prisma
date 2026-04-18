@@ -20,6 +20,11 @@ model User {
   email        String    @unique
   passwordHash String
   name         String?
+  // Optional profile fields used to pre-fill bureaucratic forms
+  // (ID number, phone, birth date). Nothing sensitive is shared externally.
+  idNumber     String?
+  phoneNumber  String?
+  birthDate    DateTime?
   isAdmin      Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -89,6 +94,9 @@ model WorkflowStep {
   // Step-level trigger conditions, e.g. { "employmentType": "self-employed" }.
   // Evaluated by the workflow engine in addition to the parent workflow's conditions.
   triggerConditions Json?
+  // Regulatory deadline in days after move date (e.g. 30 for "address change within 30 days").
+  // null = no hard deadline. Used to auto-create deadline reminders.
+  deadlineDaysAfterMove Int?
   // requiredDocuments: [{ name, description, required }]
   requiredDocuments Json?
   // externalLinks: [{ label, url, category: "official"|"info" }]
@@ -140,6 +148,13 @@ model Document {
   storagePath String
   mimeType    String
   sizeBytes   Int
+  // Optional free-form document type chosen by the user on upload,
+  // e.g. "rental-contract", "id-card", "bank-statement", "utility-bill".
+  docType     String?
+  // Fields extracted from the document (either via OCR provider or manually).
+  // Shape varies by docType. Example for rental-contract:
+  //   { landlordName: string, rentAmount: number, startDate: string, endDate: string }
+  extractedFields Json?
   uploadedAt  DateTime @default(now())
 
   user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -155,6 +170,9 @@ model Reminder {
   message     String
   scheduledAt DateTime
   seen        Boolean  @default(false)
+  // Auto-generated from a regulatory deadline (not a user-created reminder).
+  // Set to true to distinguish in UI and to avoid duplicate regeneration.
+  isAutomatic Boolean  @default(false)
   createdAt   DateTime @default(now())
 
   user User  @relation(fields: [userId], references: [id], onDelete: Cascade)

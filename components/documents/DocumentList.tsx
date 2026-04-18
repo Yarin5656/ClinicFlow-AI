@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export interface DocumentItem {
@@ -9,6 +10,8 @@ export interface DocumentItem {
   mimeType: string
   sizeBytes: number
   uploadedAt: Date | string
+  docType?: string | null
+  extractedFields?: Record<string, unknown> | null
 }
 
 interface Props {
@@ -81,10 +84,21 @@ export function DocumentList({ documents, emptyLabel = "לא הועלו מסמכ
               >
                 {doc.filename}
               </a>
-              <div className="text-xs text-muted-foreground">
-                {formatSize(doc.sizeBytes)} · {formatDate(doc.uploadedAt)}
+              <div className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                <span>{formatSize(doc.sizeBytes)} · {formatDate(doc.uploadedAt)}</span>
+                {doc.extractedFields && Object.values(doc.extractedFields).some((v) => v !== null && v !== "") && (
+                  <span className="inline-flex items-center text-[10px] uppercase tracking-wide font-semibold bg-highlight-soft text-[var(--color-highlight)] px-1.5 py-0.5 rounded">
+                    ✓ פרטים הוזנו
+                  </span>
+                )}
               </div>
             </div>
+            <Link
+              href={`/documents/${doc.id}`}
+              className="text-xs text-accent hover:underline underline-offset-2 shrink-0"
+            >
+              פרטים
+            </Link>
             <button
               type="button"
               onClick={() => handleDelete(doc.id)}

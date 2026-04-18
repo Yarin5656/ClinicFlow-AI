@@ -18,6 +18,7 @@
         { "label": "חיפוש עירייה לפי עיר", "url": "https://www.gov.il/he/departments/general/local_authorities_list", "category": "info" }
       ],
       "helperNotes": "לכל עירייה יש טופס משלה ותהליך שונה. חלק מהעיריות מאפשרות הגשה מקוונת, אחרות דורשות הגעה פיזית. חשוב לשמור את אישור הקבלה.",
+      "deadlineDaysAfterMove": 30,
       "completionRules": { "requiresDocuments": true }
     },
     {
@@ -29,6 +30,7 @@
       ],
       "externalLinks": [],
       "helperNotes": "חלק מהעיריות ידרשו להחזיר תשלומים ששולמו עבור התקופה שאחרי המעבר. שמור קבלות והודעת ביטול.",
+      "deadlineDaysAfterMove": 30,
       "completionRules": { "requiresDocuments": true }
     },
     {
