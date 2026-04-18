@@ -12,6 +12,12 @@
   --color-accent-hover:     oklch(46% 0.13 200);
   --color-accent-fg:        oklch(97% 0.003 200);
 
+  /* Highlight — vivid green for "זמן חסכוני / במקום אחד" messaging */
+  --color-highlight:        oklch(60% 0.18 150);
+  --color-highlight-hover:  oklch(54% 0.19 150);
+  --color-highlight-fg:     oklch(98% 0.004 150);
+  --color-highlight-soft:   oklch(94% 0.05 150);
+
   --color-surface:          oklch(97.5% 0.006 245);
   --color-surface-raised:   oklch(99% 0.003 245);
 

@@ -21,6 +21,12 @@ const config: Config = {
           DEFAULT: "var(--color-accent)",
           foreground: "var(--color-accent-fg)",
         },
+        highlight: {
+          DEFAULT: "var(--color-highlight)",
+          hover: "var(--color-highlight-hover)",
+          foreground: "var(--color-highlight-fg)",
+          soft: "var(--color-highlight-soft)",
+        },
         surface: {
           DEFAULT: "var(--color-surface)",
           raised: "var(--color-surface-raised)",
