@@ -40,7 +40,9 @@
       "Read(//tmp/**)",
       "Bash(PORT=3002 npx tsx scripts/test-upload.ts \"cmo1o34du0006vvckrtiglad8\")",
       "Bash(date -u -d '-2 hours' '+%Y-%m-%dT%H:%M:%S.000Z')",
-      "Bash(curl -s -b /tmp/c.txt -X POST http://localhost:3003/api/reminders -H 'Content-Type: application/json' -d '{\"message\":\"זו תזכורת להפעיל badge\",\"scheduledAt\":\"__TRACKED_VAR__\"}' echo 'Due unseen count:' curl -s -b /tmp/c.txt http://localhost:3003/api/reminders)"
+      "Bash(curl -s -b /tmp/c.txt -X POST http://localhost:3003/api/reminders -H 'Content-Type: application/json' -d '{\"message\":\"זו תזכורת להפעיל badge\",\"scheduledAt\":\"__TRACKED_VAR__\"}' echo 'Due unseen count:' curl -s -b /tmp/c.txt http://localhost:3003/api/reminders)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s -o /dev/null -w \"HTTP: %{http_code}\\\\n\" http://localhost:3000)"
     ]
   }
 }
