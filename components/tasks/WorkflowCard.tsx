@@ -139,7 +139,7 @@ export function WorkflowCard({ data, icon = "📋", delay = 0 }: Props) {
             <div className="flex items-center gap-1.5 text-sm text-[var(--color-warning)]">
               <span className="h-2 w-2 rounded-full bg-[var(--color-warning)] animate-pulse" aria-hidden />
               <span className="font-medium">
-                {data.inProgressTasks} {data.inProgressTasks === 1 ? "בתהליך" : "בתהליך"}
+                {data.inProgressTasks} {data.inProgressTasks === 1 ? "משימה בתהליך" : "משימות בתהליך"}
               </span>
             </div>
           ) : (

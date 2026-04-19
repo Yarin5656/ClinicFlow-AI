@@ -269,19 +269,6 @@ function MovingScene({ reduced }: { reduced: boolean }) {
         <span className="text-xs font-bold">הכל מסודר</span>
       </motion.div>
 
-      {/* Small orbiting dot for extra life */}
-      {!reduced && (
-        <motion.div
-          className="absolute top-12 left-12 w-2 h-2 rounded-full"
-          style={{ background: "var(--color-accent)" }}
-          animate={{
-            x: [0, 20, 0, -20, 0],
-            y: [0, -15, -25, -15, 0],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          aria-hidden
-        />
-      )}
     </div>
   )
 }

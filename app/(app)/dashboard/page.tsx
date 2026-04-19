@@ -32,7 +32,7 @@ export default async function DashboardPage() {
 
   const cards = await getUserWorkflowsWithProgress(userId)
   const progress = calculateOverallProgress(cards)
-  const firstName = (session?.user?.name ?? "").split(" ")[0] || "לכם"
+  const firstName = (session?.user?.name ?? "").split(" ")[0] || "משתמש"
 
   const daysUntilMove = household.moveDate
     ? Math.max(
