@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils"
 
 /**
  * Polls /api/reminders every 60s and shows an unread badge.
- * Refetches on path change so marking-as-seen on /reminders updates the bell.
+ * Sits on top of the PageHero (dark navy), so it styles itself
+ * as a glass pill that reads well against both navy and light surfaces.
  */
 export function ReminderBell() {
   const pathname = usePathname()
@@ -15,7 +16,6 @@ export function ReminderBell() {
 
   useEffect(() => {
     let cancelled = false
-
     const fetchCount = async () => {
       try {
         const res = await fetch("/api/reminders", { cache: "no-store" })
@@ -23,10 +23,9 @@ export function ReminderBell() {
         const data = (await res.json()) as { dueUnseenCount: number }
         if (!cancelled) setCount(data.dueUnseenCount)
       } catch {
-        // silent — bell just won't update
+        /* silent */
       }
     }
-
     fetchCount()
     const interval = setInterval(fetchCount, 60_000)
     return () => {
@@ -41,24 +40,37 @@ export function ReminderBell() {
     <Link
       href="/reminders"
       className={cn(
-        "relative inline-flex items-center justify-center h-9 w-9 rounded-full",
-        "text-muted-foreground hover:bg-muted hover:text-[var(--color-text)]",
-        "transition-colors duration-150",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        "relative inline-flex items-center gap-2 h-10 pr-3 pl-2.5 rounded-full",
+        "bg-white/15 text-white border border-white/20",
+        "backdrop-blur-md shadow-sm",
+        "hover:bg-white/25 transition-colors duration-150",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-highlight)]",
+        "text-sm font-medium"
       )}
       aria-label={hasUnseen ? `${count} תזכורות חדשות` : "תזכורות"}
     >
-      <span className="text-lg" aria-hidden>
-        🔔
-      </span>
-      {hasUnseen && (
-        <span
-          className="absolute -top-0.5 -left-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-[oklch(55%_0.17_25)] text-white text-[10px] font-bold flex items-center justify-center tabular-nums animate-fade-in"
-          aria-hidden
+      <span className="relative inline-flex items-center justify-center w-6 h-6 shrink-0" aria-hidden>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5"
         >
-          {count! > 9 ? "9+" : count}
-        </span>
-      )}
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+        </svg>
+        {hasUnseen && (
+          <span
+            className="absolute -top-0.5 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-[oklch(60%_0.2_25)] text-white text-[10px] font-bold flex items-center justify-center tabular-nums ring-2 ring-[oklch(22%_0.07_245)]"
+          >
+            {count! > 9 ? "9+" : count}
+          </span>
+        )}
+      </span>
+      <span className="hidden sm:inline">תזכורות</span>
     </Link>
   )
 }
