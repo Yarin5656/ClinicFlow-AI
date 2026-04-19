@@ -18,3 +18,5 @@ node_modules
 # Test outputs
 coverage/
 /prisma/dev.db*
+
+.vercel

@@ -34,6 +34,10 @@ export class LocalStorageProvider implements StorageProvider {
   }
 
   getFullPath(storagePath: string): string {
-    return path.join(this.baseDir, storagePath)
+    const resolved = path.resolve(path.join(this.baseDir, storagePath))
+    if (!resolved.startsWith(path.resolve(this.baseDir) + path.sep)) {
+      throw new Error("Invalid storage path")
+    }
+    return resolved
   }
 }

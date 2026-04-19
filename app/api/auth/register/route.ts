@@ -2,8 +2,17 @@ import { NextResponse, type NextRequest } from "next/server"
 import { hash } from "bcryptjs"
 import { prisma } from "@/lib/db/prisma"
 import { registerSchema } from "@/lib/validations/auth"
+import { checkRateLimit } from "@/lib/rateLimit"
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
+  const { allowed, retryAfterMs } = checkRateLimit(`register:${ip}`, 5, 60 * 60 * 1000)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "יותר מדי ניסיונות. נסה שוב מאוחר יותר." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(retryAfterMs / 1000)) } }
+    )
+  }
   let body: unknown
   try {
     body = await req.json()
