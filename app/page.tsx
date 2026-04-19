@@ -178,10 +178,10 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { stat: "30",  suffix: "ימים", label: "דדליין לדיווח לכל רשות" },
-              { stat: "12",  suffix: "",      label: "משימות אוטומטיות" },
-              { stat: "250+", suffix: "",     label: "עיריות נתמכות" },
               { stat: "0",   suffix: "₪",    label: "עלות שימוש" },
+              { stat: "3",   suffix: "",      label: "תהליכים מלאים" },
+              { stat: "12",  suffix: "",      label: "משימות אוטומטיות" },
+              { stat: "5",   suffix: "דקות", label: "להתחיל" },
             ].map((item) => (
               <div
                 key={item.label}
