@@ -20,6 +20,8 @@ interface Props {
   data: WorkflowCardData
   icon?: string
   accentColor?: "navy" | "teal" | "amber" | "green"
+  /** Delay (ms) for entrance stagger when rendered in a grid. */
+  delay?: number
 }
 
 const accentStyles = {
@@ -29,7 +31,7 @@ const accentStyles = {
   green: { iconBg: "bg-[oklch(94%_0.03_150)]", iconFg: "text-[oklch(45%_0.13_150)]" },
 }
 
-export function WorkflowCard({ data, icon = "📋", accentColor = "navy" }: Props) {
+export function WorkflowCard({ data, icon = "📋", accentColor = "navy", delay = 0 }: Props) {
   const pct = data.totalTasks > 0 ? Math.round((data.completedTasks / data.totalTasks) * 100) : 0
   const isComplete = data.totalTasks > 0 && data.completedTasks === data.totalTasks
   const notStarted = data.completedTasks === 0 && data.inProgressTasks === 0
@@ -37,24 +39,27 @@ export function WorkflowCard({ data, icon = "📋", accentColor = "navy" }: Prop
 
   return (
     <motion.div
-      whileHover={{ y: -3 }}
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 120, damping: 18, delay }}
+      whileHover={{ y: -4 }}
       whileTap={{ y: 0, scale: 0.99 }}
-      transition={{ type: "spring", stiffness: 350, damping: 25 }}
       style={{ viewTransitionName: `workflow-${data.slug}` }}
     >
     <Link
       href={`/tasks?workflow=${data.slug}`}
       className={cn(
-        "group block bg-surface-raised rounded-lg border border-border p-5",
+        "group block bg-surface-raised rounded-2xl border border-border p-6",
         "shadow-card hover:shadow-card-hover hover:border-[var(--color-muted-fg)]",
         "transition-[box-shadow,border-color] duration-200"
       )}
     >
       {/* Header: icon + title + status pill */}
-      <div className="flex items-start gap-3 mb-4">
+      <div className="flex items-start gap-3 mb-5">
         <div
           className={cn(
-            "w-11 h-11 rounded-lg flex items-center justify-center text-xl shrink-0",
+            "w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0",
+            "group-hover:scale-110 transition-transform duration-200",
             styles.iconBg,
             styles.iconFg
           )}
@@ -63,7 +68,7 @@ export function WorkflowCard({ data, icon = "📋", accentColor = "navy" }: Prop
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-display text-lg font-medium text-[var(--color-text)] leading-tight mb-1">
+          <h3 className="font-display text-xl font-semibold text-[var(--color-text)] leading-tight mb-1">
             {data.title}
           </h3>
           <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
@@ -71,8 +76,8 @@ export function WorkflowCard({ data, icon = "📋", accentColor = "navy" }: Prop
           </p>
         </div>
         {isComplete && (
-          <span className="shrink-0 inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium bg-[var(--color-done-surface)] text-[var(--color-done)]">
-            הושלם
+          <span className="shrink-0 inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold bg-[var(--color-highlight-soft)] text-[var(--color-highlight)]">
+            הושלם ✓
           </span>
         )}
       </div>
