@@ -109,6 +109,10 @@ model WorkflowStep {
 
   workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
   tasks    Task[]
+
+  // Stable identity across seed re-runs: same (workflow, order) always maps
+  // to the same step row, so re-seeding preserves user Tasks referencing it.
+  @@unique([workflowId, order])
 }
 
 // ─── User Tasks ───────────────────────────────────────────────────

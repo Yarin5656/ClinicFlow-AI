@@ -68,17 +68,14 @@ async function seedWorkflows() {
       },
     })
 
-    // Replace all steps with a fresh set (workflow defs are source of truth).
-    // Delete existing tasks + steps for this workflow, then recreate.
-    // Safe only at dev seed time — do not run on production after launch.
-    await prisma.task.deleteMany({
-      where: { workflowStep: { workflowId: workflow.id } },
-    })
-    await prisma.workflowStep.deleteMany({ where: { workflowId: workflow.id } })
-
+    // Upsert steps by (workflowId, order) — stable across seed runs, so
+    // user Tasks that reference workflowStepId keep working.
+    const keptOrders = new Set<number>()
     for (const step of def.steps) {
-      await prisma.workflowStep.create({
-        data: {
+      keptOrders.add(step.order)
+      await prisma.workflowStep.upsert({
+        where: { workflowId_order: { workflowId: workflow.id, order: step.order } },
+        create: {
           workflowId: workflow.id,
           order: step.order,
           title: step.title,
@@ -90,7 +87,32 @@ async function seedWorkflows() {
           helperNotes: step.helperNotes ?? null,
           completionRules: asJson(step.completionRules ?? {}),
         },
+        update: {
+          title: step.title,
+          description: step.description,
+          triggerConditions: asJson(step.triggerConditions ?? {}),
+          deadlineDaysAfterMove: step.deadlineDaysAfterMove ?? null,
+          requiredDocuments: asJson(step.requiredDocuments ?? []),
+          externalLinks: asJson(step.externalLinks ?? []),
+          helperNotes: step.helperNotes ?? null,
+          completionRules: asJson(step.completionRules ?? {}),
+        },
       })
+    }
+
+    // Remove orphan steps (present in DB, missing from the current JSON).
+    // Also cascades their Tasks. This is intentional: if a step was removed
+    // from the workflow definition, the related user tasks are no longer meaningful.
+    const staleSteps = await prisma.workflowStep.findMany({
+      where: {
+        workflowId: workflow.id,
+        order: { notIn: Array.from(keptOrders) },
+      },
+      select: { id: true, order: true },
+    })
+    for (const stale of staleSteps) {
+      await prisma.task.deleteMany({ where: { workflowStepId: stale.id } })
+      await prisma.workflowStep.delete({ where: { id: stale.id } })
     }
 
     console.log(`✅ Seeded workflow: ${def.slug} (${def.steps.length} steps)`)
