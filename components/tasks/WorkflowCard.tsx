@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link"
+import { motion } from "motion/react"
 import { ProgressBar } from "@/components/ui/ProgressBar"
 import { cn } from "@/lib/utils"
 
@@ -33,12 +36,18 @@ export function WorkflowCard({ data, icon = "📋", accentColor = "navy" }: Prop
   const styles = accentStyles[accentColor]
 
   return (
+    <motion.div
+      whileHover={{ y: -3 }}
+      whileTap={{ y: 0, scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+      style={{ viewTransitionName: `workflow-${data.slug}` }}
+    >
     <Link
       href={`/tasks?workflow=${data.slug}`}
       className={cn(
         "group block bg-surface-raised rounded-lg border border-border p-5",
         "shadow-card hover:shadow-card-hover hover:border-[var(--color-muted-fg)]",
-        "transition-all duration-200"
+        "transition-[box-shadow,border-color] duration-200"
       )}
     >
       {/* Header: icon + title + status pill */}
@@ -107,5 +116,6 @@ export function WorkflowCard({ data, icon = "📋", accentColor = "navy" }: Prop
         </span>
       </div>
     </Link>
+    </motion.div>
   )
 }

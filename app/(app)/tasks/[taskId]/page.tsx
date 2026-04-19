@@ -81,7 +81,11 @@ export default async function TaskDetailPage({ params }: Props) {
           </div>
 
           {/* Title + description + status toggle */}
-          <Card padding="lg" className="flex flex-col gap-5">
+          <Card
+            padding="lg"
+            className="flex flex-col gap-5"
+            style={{ viewTransitionName: `task-${task.id}` }}
+          >
             <div className="flex items-start gap-3 flex-wrap">
               <div className="flex-1 min-w-[240px]">
                 <h2 className="font-display text-2xl font-medium text-[var(--color-text)] mb-2 leading-tight">

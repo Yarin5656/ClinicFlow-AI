@@ -59,7 +59,7 @@ export default async function TasksPage({ searchParams }: Props) {
     : `סה"כ ${tasks.length} משימות`
 
   return (
-    <>
+    <div style={workflowSlug ? { viewTransitionName: `workflow-${workflowSlug}` } : undefined}>
       <Header title={pageTitle} subtitle={subtitle} />
       <div className="flex-1 p-6 overflow-auto">
         <div className="max-w-3xl mx-auto flex flex-col gap-6">
@@ -89,6 +89,7 @@ export default async function TasksPage({ searchParams }: Props) {
                         key={task.id}
                         href={`/tasks/${task.id}`}
                         className="group"
+                        style={{ viewTransitionName: `task-${task.id}` }}
                       >
                         <Card hoverable padding="md" className="flex items-center gap-4">
                           <div className="flex-1 min-w-0">
@@ -111,6 +112,6 @@ export default async function TasksPage({ searchParams }: Props) {
           )}
         </div>
       </div>
-    </>
+    </div>
   )
 }

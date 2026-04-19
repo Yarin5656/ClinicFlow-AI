@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { AnimatePresence, motion } from "motion/react"
 import { Button } from "@/components/ui/Button"
 
 interface Props {
@@ -17,6 +18,7 @@ export function UploadZone({ taskId, onUploaded }: Props) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState(false)
+  const [celebrate, setCelebrate] = useState(false)
 
   const handleFile = async (file: File) => {
     setError(null)
@@ -37,6 +39,9 @@ export function UploadZone({ taskId, onUploaded }: Props) {
 
     setUploading(false)
     if (inputRef.current) inputRef.current.value = ""
+    // Celebration moment on success — checkmark pops in, fades out after 1.2s
+    setCelebrate(true)
+    setTimeout(() => setCelebrate(false), 1200)
     onUploaded?.()
     router.refresh()
   }
@@ -62,12 +67,35 @@ export function UploadZone({ taskId, onUploaded }: Props) {
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        className={`rounded-lg border-2 border-dashed transition-colors p-6 text-center ${
+        className={`relative rounded-lg border-2 border-dashed transition-all duration-200 p-6 text-center ${
           dragOver
-            ? "border-accent bg-[var(--color-pending-surface)]"
+            ? "border-[var(--color-highlight)] bg-highlight-soft scale-[1.01]"
             : "border-border bg-surface-raised"
         }`}
       >
+        <AnimatePresence>
+          {celebrate && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.3 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+              className="absolute inset-0 flex items-center justify-center bg-surface-raised/90 backdrop-blur-sm rounded-lg z-10"
+            >
+              <motion.div
+                initial={{ scale: 0, rotate: -45 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", stiffness: 280, damping: 14, delay: 0.05 }}
+                className="flex items-center gap-2 text-[var(--color-highlight)] font-semibold text-lg"
+              >
+                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-highlight)] text-[var(--color-highlight-fg)] text-xl">
+                  ✓
+                </span>
+                הקובץ הועלה
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <input
           ref={inputRef}
           type="file"

@@ -88,3 +88,39 @@ h1, h2, h3, h4 {
   .bg-surface { background-color: var(--color-surface); }
   .bg-surface-raised { background-color: var(--color-surface-raised); }
 }
+
+/* ─── View Transitions API (Chrome/Safari, silently ignored elsewhere) ── */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  ::view-transition-old(*), ::view-transition-new(*) {
+    animation-duration: 0s !important;
+  }
+}
+
+/* Spring-feeling active states */
+@layer utilities {
+  .btn-spring {
+    transition: transform 130ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 200ms ease-out;
+  }
+  .btn-spring:hover  { transform: translateY(-1px); }
+  .btn-spring:active { transform: translateY(1px) scale(0.98); transition-duration: 60ms; }
+}
+
+@keyframes subtle-pop {
+  0%   { transform: scale(0.96); opacity: 0; }
+  60%  { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.animate-subtle-pop {
+  animation: subtle-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}

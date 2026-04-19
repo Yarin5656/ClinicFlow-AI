@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import type { CSSProperties } from "react"
 
 interface CardProps {
   className?: string
@@ -6,18 +7,30 @@ interface CardProps {
   as?: "div" | "article" | "section"
   padding?: "sm" | "md" | "lg"
   hoverable?: boolean
+  /** Inline style (e.g., for view-transition-name). */
+  style?: CSSProperties
 }
 
 const paddingClasses = { sm: "p-4", md: "p-5", lg: "p-6" }
 
-export function Card({ className, children, as: Tag = "div", padding = "md", hoverable = false }: CardProps) {
+export function Card({
+  className,
+  children,
+  as: Tag = "div",
+  padding = "md",
+  hoverable = false,
+  style,
+}: CardProps) {
   return (
-    <Tag className={cn(
-      "bg-surface-raised rounded-lg border border-border shadow-card",
-      hoverable && "cursor-pointer transition-shadow duration-200 hover:shadow-card-hover",
-      paddingClasses[padding],
-      className
-    )}>
+    <Tag
+      className={cn(
+        "bg-surface-raised rounded-lg border border-border shadow-card",
+        hoverable && "cursor-pointer transition-shadow duration-200 hover:shadow-card-hover",
+        paddingClasses[padding],
+        className
+      )}
+      style={style}
+    >
       {children}
     </Tag>
   )
