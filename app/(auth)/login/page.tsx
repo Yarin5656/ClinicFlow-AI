@@ -12,16 +12,41 @@ export default async function LoginPage() {
   if (session) redirect("/dashboard")
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-surface px-4 py-12">
-      <div className="w-full max-w-sm">
+    <main className="min-h-screen flex items-center justify-center px-4 py-12 relative">
+      {/* Background ambient */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 75% 20%, oklch(94% 0.04 150 / 0.6), transparent 60%), " +
+            "radial-gradient(ellipse at 15% 90%, oklch(94% 0.025 245 / 0.7), transparent 60%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, oklch(88% 0.015 245) 1px, transparent 0)",
+          backgroundSize: "18px 18px",
+        }}
+      />
+
+      <div className="relative w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link
             href="/"
-            className="inline-block font-display text-2xl font-bold text-primary mb-2"
+            className="inline-flex items-baseline gap-1.5 mb-4"
           >
-            MoveEasy Israel
+            <span className="font-display text-2xl font-bold text-primary">
+              MoveEasy
+            </span>
+            <span className="text-xs text-[var(--color-highlight)] font-semibold uppercase tracking-wider">
+              ישראל
+            </span>
           </Link>
-          <h1 className="font-display text-xl text-[var(--color-text)] mb-1">
+          <h1 className="font-display text-2xl font-bold text-[var(--color-text)] mb-1">
             ברוך שובך
           </h1>
           <p className="text-sm text-muted-foreground">
@@ -29,13 +54,18 @@ export default async function LoginPage() {
           </p>
         </div>
 
-        <Suspense fallback={null}>
-          <LoginForm />
-        </Suspense>
+        <div className="bg-surface-raised rounded-2xl border border-border shadow-card p-6 lg:p-8">
+          <Suspense fallback={null}>
+            <LoginForm />
+          </Suspense>
+        </div>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           עדיין אין חשבון?{" "}
-          <Link href="/register" className="text-accent hover:underline underline-offset-2 font-medium">
+          <Link
+            href="/register"
+            className="text-[var(--color-highlight)] hover:underline underline-offset-2 font-bold"
+          >
             יצירת חשבון
           </Link>
         </p>

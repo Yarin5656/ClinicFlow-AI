@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { prisma } from "@/lib/db/prisma"
-import { Header } from "@/components/layout/Header"
+import { PageHero } from "@/components/layout/PageHero"
 import { Card } from "@/components/ui/Card"
 import { EmptyState } from "@/components/ui/EmptyState"
 import { DocumentList } from "@/components/documents/DocumentList"
@@ -41,16 +41,16 @@ export default async function DocumentsPage() {
     orderBy: { uploadedAt: "desc" },
   })
 
-  // Normalize extractedFields into a plain record so the DocumentList type matches.
   const normalizedDocs = documents.map((d) => ({
     ...d,
     extractedFields:
-      d.extractedFields && typeof d.extractedFields === "object" && !Array.isArray(d.extractedFields)
+      d.extractedFields &&
+      typeof d.extractedFields === "object" &&
+      !Array.isArray(d.extractedFields)
         ? (d.extractedFields as Record<string, unknown>)
         : null,
   }))
 
-  // Group by task (or "general" if no task)
   type NormalizedDoc = (typeof normalizedDocs)[number]
   type Group = {
     key: string
@@ -77,59 +77,67 @@ export default async function DocumentsPage() {
   const groups = Array.from(groupMap.values())
 
   return (
-    <>
-      <Header
+    <div className="flex-1 overflow-auto">
+      <PageHero
+        eyebrow="הארכיון שלך"
         title="המסמכים שלי"
-        subtitle={`סה"כ ${documents.length} ${documents.length === 1 ? "מסמך" : "מסמכים"}`}
+        subtitle={
+          <span>
+            {documents.length}{" "}
+            {documents.length === 1 ? "מסמך" : "מסמכים"} · מאובטח, רק לך
+          </span>
+        }
       />
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="max-w-3xl mx-auto flex flex-col gap-6">
-          <Card padding="lg">
-            <h3 className="font-display text-base font-medium text-[var(--color-text)] mb-3">
-              העלה מסמך חדש
-            </h3>
-            <UploadZone />
-          </Card>
 
-          {groups.length === 0 ? (
-            <Card>
-              <EmptyState
-                icon="📂"
-                title="עוד אין מסמכים"
-                description="אפשר להעלות מסמך כאן, או להעלות מתוך משימה ספציפית."
-              />
-            </Card>
-          ) : (
-            groups.map((group) => (
-              <section key={group.key} className="flex flex-col gap-2">
-                <div className="flex items-baseline justify-between">
-                  <div>
-                    <h2 className="text-sm font-semibold text-[var(--color-text)]">
-                      {group.taskId ? (
-                        <Link
-                          href={`/tasks/${group.taskId}`}
-                          className="hover:text-primary transition-colors"
-                        >
-                          {group.title}
-                        </Link>
-                      ) : (
-                        group.title
-                      )}
-                    </h2>
-                    {group.subtitle && (
-                      <p className="text-xs text-muted-foreground">{group.subtitle}</p>
+      <div className="max-w-3xl mx-auto px-6 lg:px-8 py-8 lg:py-10 flex flex-col gap-5">
+        <Card padding="lg">
+          <h3 className="font-display text-base font-bold text-[var(--color-text)] mb-3">
+            העלה מסמך חדש
+          </h3>
+          <UploadZone />
+        </Card>
+
+        {groups.length === 0 ? (
+          <Card>
+            <EmptyState
+              icon="◫"
+              title="עוד אין מסמכים"
+              description="אפשר להעלות מסמך כאן, או להעלות מתוך משימה ספציפית."
+            />
+          </Card>
+        ) : (
+          groups.map((group) => (
+            <section key={group.key} className="flex flex-col gap-2">
+              <div className="flex items-baseline justify-between px-1">
+                <div>
+                  <h2 className="text-sm font-bold text-[var(--color-text)]">
+                    {group.taskId ? (
+                      <Link
+                        href={`/tasks/${group.taskId}`}
+                        className="hover:text-[var(--color-highlight)] transition-colors"
+                      >
+                        {group.title}
+                      </Link>
+                    ) : (
+                      group.title
                     )}
-                  </div>
-                  <span className="text-xs text-muted-foreground">
-                    {group.docs.length} {group.docs.length === 1 ? "מסמך" : "מסמכים"}
-                  </span>
+                  </h2>
+                  {group.subtitle && (
+                    <p className="text-xs text-muted-foreground">
+                      {group.subtitle}
+                    </p>
+                  )}
                 </div>
-                <DocumentList documents={group.docs} />
-              </section>
-            ))
-          )}
-        </div>
+                <span className="text-xs text-muted-foreground">
+                  {group.docs.length}{" "}
+                  {group.docs.length === 1 ? "מסמך" : "מסמכים"}
+                </span>
+              </div>
+              <DocumentList documents={group.docs} />
+            </section>
+          ))
+        )}
       </div>
-    </>
+    </div>
   )
 }

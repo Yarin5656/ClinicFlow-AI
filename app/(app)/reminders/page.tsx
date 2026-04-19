@@ -2,11 +2,14 @@ import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { prisma } from "@/lib/db/prisma"
-import { Header } from "@/components/layout/Header"
+import { PageHero } from "@/components/layout/PageHero"
 import { Card } from "@/components/ui/Card"
 import { EmptyState } from "@/components/ui/EmptyState"
 import { CreateReminderForm } from "@/components/reminders/CreateReminderForm"
-import { ReminderItem, type ReminderItemData } from "@/components/reminders/ReminderItem"
+import {
+  ReminderItem,
+  type ReminderItemData,
+} from "@/components/reminders/ReminderItem"
 
 export const metadata = { title: "תזכורות — MoveEasy Israel" }
 
@@ -37,76 +40,99 @@ export default async function RemindersPage() {
     const isDue = r.scheduledAt.getTime() <= now
     if (isDue && !r.seen) dueUnseen.push(r)
     else if (!isDue) upcoming.push(r)
-    else done.push(r) // past + seen
+    else done.push(r)
   }
 
   return (
-    <>
-      <Header
-        title="תזכורות"
-        subtitle={`${dueUnseen.length} ממתינות לטיפול · ${upcoming.length} עתידיות`}
+    <div className="flex-1 overflow-auto">
+      <PageHero
+        eyebrow="תזכורות · בתוך המערכת"
+        title="מה הבא בתור?"
+        subtitle={
+          <span>
+            {dueUnseen.length > 0 && (
+              <>
+                <span className="text-[var(--color-warning)] font-semibold">
+                  {dueUnseen.length} דורשות טיפול
+                </span>
+                <span className="opacity-60 mx-2">·</span>
+              </>
+            )}
+            {upcoming.length}{" "}
+            {upcoming.length === 1 ? "עתידית" : "עתידיות"}
+          </span>
+        }
       />
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="max-w-2xl mx-auto flex flex-col gap-6">
-          <Card padding="lg">
-            <h3 className="font-display text-base font-medium text-[var(--color-text)] mb-4">
-              תזכורת חדשה
-            </h3>
-            <CreateReminderForm />
+
+      <div className="max-w-2xl mx-auto px-6 lg:px-8 py-8 lg:py-10 flex flex-col gap-5">
+        <Card padding="lg">
+          <h3 className="font-display text-base font-bold text-[var(--color-text)] mb-4">
+            תזכורת חדשה
+          </h3>
+          <CreateReminderForm />
+        </Card>
+
+        {reminders.length === 0 ? (
+          <Card>
+            <EmptyState
+              icon="◐"
+              title="אין תזכורות עדיין"
+              description="צור תזכורת כדי לא לשכוח משימה חשובה."
+            />
           </Card>
-
-          {reminders.length === 0 ? (
-            <Card>
-              <EmptyState
-                icon="🔔"
-                title="אין תזכורות עדיין"
-                description="צור תזכורת כדי לא לשכוח משימה חשובה."
+        ) : (
+          <>
+            {dueUnseen.length > 0 && (
+              <ReminderSection
+                label="הגיע הזמן"
+                tone="warning"
+                items={dueUnseen}
               />
-            </Card>
-          ) : (
-            <>
-              {dueUnseen.length > 0 && (
-                <section className="flex flex-col gap-2">
-                  <h2 className="text-xs uppercase tracking-wide text-[var(--color-warning)] font-semibold">
-                    הגיע הזמן ({dueUnseen.length})
-                  </h2>
-                  <ul className="flex flex-col gap-2">
-                    {dueUnseen.map((r) => (
-                      <ReminderItem key={r.id} reminder={r} />
-                    ))}
-                  </ul>
-                </section>
-              )}
-
-              {upcoming.length > 0 && (
-                <section className="flex flex-col gap-2">
-                  <h2 className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
-                    עתידיות ({upcoming.length})
-                  </h2>
-                  <ul className="flex flex-col gap-2">
-                    {upcoming.map((r) => (
-                      <ReminderItem key={r.id} reminder={r} />
-                    ))}
-                  </ul>
-                </section>
-              )}
-
-              {done.length > 0 && (
-                <section className="flex flex-col gap-2">
-                  <h2 className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
-                    היסטוריה ({done.length})
-                  </h2>
-                  <ul className="flex flex-col gap-2">
-                    {done.map((r) => (
-                      <ReminderItem key={r.id} reminder={r} />
-                    ))}
-                  </ul>
-                </section>
-              )}
-            </>
-          )}
-        </div>
+            )}
+            {upcoming.length > 0 && (
+              <ReminderSection
+                label="עתידיות"
+                tone="muted"
+                items={upcoming}
+              />
+            )}
+            {done.length > 0 && (
+              <ReminderSection
+                label="היסטוריה"
+                tone="muted"
+                items={done}
+              />
+            )}
+          </>
+        )}
       </div>
-    </>
+    </div>
+  )
+}
+
+function ReminderSection({
+  label,
+  tone,
+  items,
+}: {
+  label: string
+  tone: "warning" | "muted"
+  items: ReminderItemData[]
+}) {
+  const color =
+    tone === "warning"
+      ? "text-[var(--color-warning)]"
+      : "text-muted-foreground"
+  return (
+    <section className="flex flex-col gap-2.5">
+      <h2 className={`text-xs uppercase tracking-[0.18em] font-bold ${color}`}>
+        {label} ({items.length})
+      </h2>
+      <ul className="flex flex-col gap-2.5">
+        {items.map((r) => (
+          <ReminderItem key={r.id} reminder={r} />
+        ))}
+      </ul>
+    </section>
   )
 }
