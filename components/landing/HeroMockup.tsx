@@ -1,95 +1,176 @@
 /**
- * Illustrated "dashboard preview" for the landing hero.
- * Pure SVG-ish HTML, no external image assets.
- * Inspired by LoFrayer's phone mockup approach.
+ * MoveEasy hero illustration — a stylized relocation journey.
+ * NOT a generic dashboard mockup: this is a route-map that shows the
+ * move itself (from A to B), with the 3 workflows as checkpoints along
+ * the path, and an Israeli-bureaucracy "approved stamp" moment.
  */
 export function HeroMockup() {
   return (
-    <div className="relative w-full max-w-[440px] mx-auto lg:mr-0">
-      <div className="relative rounded-2xl bg-surface-raised border border-border shadow-card p-5 aspect-[5/6] overflow-hidden">
-        {/* Fake app header */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[10px] font-bold">
-            י
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <div className="h-2 w-20 rounded-full bg-muted" />
-            <div className="h-1.5 w-14 rounded-full bg-muted opacity-60" />
-          </div>
-        </div>
-
-        {/* Progress banner */}
-        <div className="rounded-lg bg-primary text-primary-foreground p-3 mb-3">
-          <div className="flex items-baseline justify-between mb-2">
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-display text-2xl font-bold">45%</span>
-              <span className="text-[10px] opacity-80">הושלמו</span>
-            </div>
-            <div className="text-[10px] opacity-80">בעוד 12 ימים</div>
-          </div>
-          <div className="h-1 rounded-full bg-[oklch(35%_0.06_245)] overflow-hidden">
-            <div className="h-full w-[45%] bg-highlight rounded-full" />
-          </div>
-        </div>
-
-        {/* Workflow cards stack */}
-        <div className="flex flex-col gap-2">
-          {[
-            { icon: "🏛️", title: "שינוי כתובת", pct: 60, badge: "בתהליך" },
-            { icon: "🏙️", title: "ארנונה עירונית", pct: 25, badge: null },
-            { icon: "💰", title: "רשות המסים", pct: 100, badge: "הושלם" },
-          ].map((w, i) => (
-            <div
-              key={i}
-              className="rounded-md bg-surface border border-border p-2.5"
-            >
-              <div className="flex items-center gap-2 mb-1.5">
-                <div className="h-7 w-7 rounded-md bg-[var(--color-pending-surface)] flex items-center justify-center text-sm">
-                  {w.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[11px] font-medium text-[var(--color-text)] truncate">
-                    {w.title}
-                  </div>
-                </div>
-                {w.badge && (
-                  <span
-                    className={
-                      w.badge === "הושלם"
-                        ? "text-[9px] px-1.5 py-0.5 rounded bg-highlight-soft text-[var(--color-highlight)]"
-                        : "text-[9px] px-1.5 py-0.5 rounded bg-[var(--color-warning-surface)] text-[var(--color-warning)]"
-                    }
-                  >
-                    {w.badge}
-                  </span>
-                )}
-              </div>
-              <div className="h-1 rounded-full bg-muted overflow-hidden">
-                <div
-                  className={
-                    w.pct === 100
-                      ? "h-full bg-highlight rounded-full"
-                      : "h-full bg-accent rounded-full"
-                  }
-                  style={{ width: `${w.pct}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Floating badge */}
-        <div className="absolute -bottom-3 -left-3 bg-highlight text-highlight-foreground rounded-lg px-3 py-1.5 shadow-card flex items-center gap-1.5 text-xs font-semibold rotate-[-4deg]">
-          <span aria-hidden>✓</span>
-          <span>10 מתוך 11 הושלמו</span>
-        </div>
-      </div>
-
-      {/* Background accent */}
+    <div className="relative w-full max-w-[460px] mx-auto lg:mr-0">
+      {/* Subtle accent shadow behind card */}
       <div
         aria-hidden
-        className="absolute -z-10 inset-0 translate-x-4 translate-y-4 rounded-2xl bg-highlight-soft"
+        className="absolute -z-10 inset-0 translate-x-5 translate-y-5 rounded-[28px] bg-highlight-soft"
       />
+
+      <div
+        className="relative rounded-[28px] bg-surface-raised border border-border shadow-card p-6 pt-8 overflow-hidden"
+        style={{ aspectRatio: "5 / 6" }}
+      >
+        {/* Map grid background — faint dotted grid */}
+        <div
+          className="absolute inset-0 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, oklch(88% 0.015 245) 1px, transparent 0)",
+            backgroundSize: "18px 18px",
+          }}
+          aria-hidden
+        />
+
+        {/* Top label: From address */}
+        <div className="relative flex items-center justify-between text-[11px] mb-4">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-[var(--color-muted-fg)]" aria-hidden />
+            <span>הדירה הקודמת</span>
+          </div>
+          <div className="text-muted-foreground font-mono text-[10px]">
+            01 / 05 / 2026
+          </div>
+        </div>
+
+        {/* SVG route diagram */}
+        <div className="relative h-[68%]">
+          <svg viewBox="0 0 320 360" className="absolute inset-0 w-full h-full" aria-hidden>
+            {/* Old apartment icon */}
+            <g transform="translate(36, 26)">
+              <rect width="50" height="52" rx="4" fill="oklch(88% 0.015 245)" />
+              <rect x="4" y="8" width="10" height="10" rx="1" fill="oklch(75% 0.02 245)" />
+              <rect x="20" y="8" width="10" height="10" rx="1" fill="oklch(75% 0.02 245)" />
+              <rect x="36" y="8" width="10" height="10" rx="1" fill="oklch(75% 0.02 245)" />
+              <rect x="4" y="24" width="10" height="10" rx="1" fill="oklch(75% 0.02 245)" />
+              <rect x="20" y="24" width="10" height="10" rx="1" fill="oklch(75% 0.02 245)" />
+              <rect x="36" y="24" width="10" height="10" rx="1" fill="oklch(75% 0.02 245)" />
+              <rect x="18" y="40" width="14" height="12" rx="1" fill="oklch(92% 0.01 245)" />
+            </g>
+
+            {/* Dashed route path */}
+            <path
+              d="M 60 80 Q 130 110, 110 170 T 230 270 Q 240 300, 260 310"
+              fill="none"
+              stroke="oklch(60% 0.18 150)"
+              strokeWidth="2.5"
+              strokeDasharray="6 5"
+              strokeLinecap="round"
+            />
+
+            {/* New apartment (destination) — slightly larger + highlight frame */}
+            <g transform="translate(228, 290)">
+              <rect x="-4" y="-4" width="68" height="74" rx="6" fill="oklch(94% 0.05 150)" />
+              <rect width="60" height="66" rx="4" fill="oklch(25% 0.08 245)" />
+              <rect x="5" y="8" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="25" y="8" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="45" y="8" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="5" y="24" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="25" y="24" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="45" y="24" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="5" y="40" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="25" y="40" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="45" y="40" width="10" height="10" rx="1" fill="oklch(65% 0.07 210)" />
+              <rect x="22" y="54" width="16" height="12" rx="1" fill="oklch(94% 0.05 150)" />
+            </g>
+
+            {/* Destination pin with "חדשה" flag */}
+            <g transform="translate(258, 275)">
+              <path
+                d="M 0 0 L 14 0 L 14 10 L 4 10 L 0 14 Z"
+                fill="oklch(60% 0.18 150)"
+              />
+              <circle cx="-8" cy="0" r="3" fill="oklch(60% 0.18 150)" />
+            </g>
+          </svg>
+
+          {/* Workflow chips — positioned along the route */}
+          <div className="absolute top-[22%] right-[28%]">
+            <WorkflowChip icon="🏛️" label="משרד הפנים" status="done" />
+          </div>
+          <div className="absolute top-[46%] right-[12%]">
+            <WorkflowChip icon="🏙️" label="ארנונה" status="done" />
+          </div>
+          <div className="absolute top-[64%] right-[44%]">
+            <WorkflowChip icon="💰" label="רשות המסים" status="progress" />
+          </div>
+        </div>
+
+        {/* Bottom: destination address */}
+        <div className="relative mt-2 pt-4 border-t border-border">
+          <div className="flex items-center justify-between text-[11px] mb-2">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-[var(--color-highlight)]" aria-hidden />
+              <span className="font-medium text-[var(--color-text)]">
+                הדירה החדשה · רמת גן
+              </span>
+            </div>
+            <div className="text-muted-foreground">2 תהליכים הושלמו</div>
+          </div>
+        </div>
+
+        {/* "אושר" official stamp — distinctive Israeli bureaucracy reference */}
+        <div
+          className="absolute bottom-12 left-3 rotate-[-12deg] select-none"
+          aria-hidden
+        >
+          <div
+            className="border-[3px] rounded-lg px-3 py-1.5"
+            style={{
+              borderColor: "oklch(55% 0.18 25)",
+              color: "oklch(55% 0.18 25)",
+              background: "oklch(98% 0.01 25 / 0.8)",
+            }}
+          >
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-display font-bold text-base tracking-[0.08em]">
+                אושר
+              </span>
+              <span className="text-[9px] font-mono opacity-70">
+                10 / 05
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function WorkflowChip({
+  icon,
+  label,
+  status,
+}: {
+  icon: string
+  label: string
+  status: "done" | "progress"
+}) {
+  const isDone = status === "done"
+  return (
+    <div
+      className={`relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-semibold shadow-card ${
+        isDone
+          ? "bg-[var(--color-highlight)] text-[var(--color-highlight-fg)]"
+          : "bg-[var(--color-warning-surface)] text-[var(--color-warning)] border border-[var(--color-warning)]/30"
+      }`}
+    >
+      <span aria-hidden>{icon}</span>
+      <span>{label}</span>
+      {isDone && (
+        <span
+          className="flex items-center justify-center w-3.5 h-3.5 rounded-full bg-white text-[var(--color-highlight)] text-[9px]"
+          aria-hidden
+        >
+          ✓
+        </span>
+      )}
     </div>
   )
 }
