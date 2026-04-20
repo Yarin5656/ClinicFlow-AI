@@ -1,8 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { HeroMockup } from "@/components/landing/HeroMockup"
+
+export const metadata: Metadata = {
+  title: "ClinicFlow AI — Back Office לקליניקות אסתטיקה",
+  description: "back office חכם לקליניקות אסתטיקה",
+}
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions)
@@ -14,7 +20,7 @@ export default async function HomePage() {
       <nav className="h-16 border-b border-border bg-surface-raised">
         <div className="max-w-6xl mx-auto h-full px-6 flex items-center justify-between">
           <Link href="/" className="font-display text-xl font-bold text-primary">
-            MoveEasy <span className="text-muted-foreground font-medium text-sm">ישראל</span>
+            ClinicFlow <span className="text-muted-foreground font-medium text-sm">AI</span>
           </Link>
           <div className="flex items-center gap-3">
             <Link
@@ -27,7 +33,7 @@ export default async function HomePage() {
               href="/register"
               className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary-hover transition-colors"
             >
-              התחל חינם
+              התחל בחינם
             </Link>
           </div>
         </div>
@@ -40,17 +46,17 @@ export default async function HomePage() {
           {/* Copy */}
           <div className="animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full bg-highlight-soft text-[var(--color-highlight)] px-3 py-1 text-xs font-semibold mb-5 border border-[var(--color-highlight)]/15">
-              <span aria-hidden>🔑</span>
-              בנוי בישראל · לישראלים שעוברים דירה
+              <span aria-hidden>✨</span>
+              בנוי לקליניקות אסתטיקה בישראל
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-[4.2rem] font-bold text-primary leading-[1.08] mb-5 tracking-tight">
-              מעבר דירה
+              הקליניקה שלך.
               <br />
-              בלי להיאבד
+              כל ליד.
               <br />
               <span className="relative inline-block text-[var(--color-highlight)]">
-                בביורוקרטיה
+                בלי להיאבד.
                 <svg
                   viewBox="0 0 320 14"
                   preserveAspectRatio="none"
@@ -66,15 +72,10 @@ export default async function HomePage() {
                   />
                 </svg>
               </span>
-              .
             </h1>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
-              משרד הפנים, ארנונה, מס הכנסה, רישיון נהיגה —{" "}
-              <span className="font-semibold text-[var(--color-text)]">
-                רשימה אישית אחת
-              </span>{" "}
-              שיודעת מה צריך, מתי ולמי. לא עוד טאבים פתוחים של gov.il.
+              ClinicFlow AI עוקב אחרי כל פנייה, יוצר משימות follow-up אוטומטיות, ומוודא שאף ליד לא נופל בין הכיסאות.
             </p>
 
             <div className="flex items-center gap-3 flex-wrap mb-6">
@@ -82,7 +83,7 @@ export default async function HomePage() {
                 href="/register"
                 className="inline-flex items-center justify-center h-12 px-6 rounded-lg bg-highlight text-highlight-foreground font-semibold text-base hover:bg-highlight-hover transition-all active:scale-[0.98] shadow-card"
               >
-                התחל עכשיו — חינם
+                התחל בחינם
               </Link>
               <a
                 href="#how-it-works"
@@ -95,15 +96,15 @@ export default async function HomePage() {
             <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-1.5">
                 <span className="text-[var(--color-highlight)]" aria-hidden>✓</span>
-                תזכורות אוטומטיות לדדליינים של 30/60 יום
+                follow-up אוטומטי לכל ליד
               </li>
               <li className="flex items-center gap-1.5">
                 <span className="text-[var(--color-highlight)]" aria-hidden>✓</span>
-                לינקים ישירים ל-gov.il ולכל עירייה
+                סיכום AI לכל פנייה
               </li>
               <li className="flex items-center gap-1.5">
                 <span className="text-[var(--color-highlight)]" aria-hidden>✓</span>
-                העתק-הדבק חכם לכל טופס
+                דשבורד בזמן אמת
               </li>
             </ul>
           </div>
@@ -123,7 +124,7 @@ export default async function HomePage() {
               שלושה צעדים ואתה בשליטה
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              במקום להסתבך עם אתרי ממשלה מיושנים וטפסים, נוצר לך workflow ברור.
+              במקום לאבד לידים בין הודעות וטלפונים, נוצר לך workflow ברור לכל פנייה.
             </p>
           </div>
 
@@ -131,18 +132,18 @@ export default async function HomePage() {
             {[
               {
                 num: "01",
-                title: "ענה על 6 שאלות קצרות",
-                desc: "תאריך מעבר, עיר יעד, שוכר/בעלים, ילדים, רכב, תעסוקה. פחות מדקה.",
+                title: "ליד נכנס — נרשם אוטומטית",
+                desc: "כל פנייה — ווטסאפ, אינסטגרם, טלפון — נרשמת, מסוכמת ומסווגת על ידי ה-AI. פחות מדקה.",
               },
               {
                 num: "02",
-                title: "קבל רשימה אישית",
-                desc: "המערכת מייצרת אוטומטית את המשימות הרלוונטיות בדיוק עבורך — לא יותר ולא פחות.",
+                title: "המערכת בונה תהליך follow-up",
+                desc: "ClinicFlow AI יוצר אוטומטית משימות מעקב בזמנים הנכונים — בלי שתצטרך לזכור.",
               },
               {
                 num: "03",
-                title: "בצע במהירות",
-                desc: "לכל משימה: מסמכים נדרשים, לינק רשמי, הערות והעלאת קבצים — הכל במקום אחד.",
+                title: "סגור עסקאות מהר יותר",
+                desc: "ראה את כל הלידים בדשבורד אחד. מה בטיפול, מה חדש, מה נופל — הכל במקום אחד.",
               },
             ].map((step) => (
               <div
@@ -169,19 +170,19 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto px-6 py-16 lg:py-20">
           <div className="text-center mb-10">
             <h2 className="font-display text-3xl lg:text-4xl font-bold mb-3">
-              כל המעבר. בלוח אחד.
+              כל ליד. בלוח אחד.
             </h2>
             <p className="opacity-80 max-w-xl mx-auto">
-              תפסיק לרדוף אחרי טפסים ואישורים. זה כבר מאורגן בשבילך.
+              תפסיק לאבד פניות בין הודעות. זה כבר מאורגן בשבילך.
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { stat: "0",   suffix: "₪",    label: "עלות שימוש" },
-              { stat: "3",   suffix: "",      label: "תהליכים מלאים" },
-              { stat: "12",  suffix: "",      label: "משימות אוטומטיות" },
-              { stat: "5",   suffix: "דקות", label: "להתחיל" },
+              { stat: "40",  suffix: "%",  label: "לידים אובדים בלי follow-up" },
+              { stat: "3",   suffix: "",   label: "תהליכי follow-up מובנים" },
+              { stat: "5",   suffix: "",   label: "דקות להתחלה" },
+              { stat: "0",   suffix: "₪",  label: "לחודש כרגע" },
             ].map((item) => (
               <div
                 key={item.label}
@@ -203,29 +204,29 @@ export default async function HomePage() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="mb-12">
             <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-highlight)] font-semibold mb-3">
-              לא עוד checklist גנרי
+              לא עוד spreadsheet ידני
             </p>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-primary tracking-tight max-w-2xl">
-              MoveEasy לא מחקה את gov.il. הוא בנוי סביב <span className="text-[var(--color-highlight)]">המעבר שלך</span>.
+              ClinicFlow AI לא מחקה CRM רגיל. הוא בנוי סביב <span className="text-[var(--color-highlight)]">הקליניקה שלך</span>.
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                badge: "מותאם אישית",
-                title: "המערכת מסננת מה לא רלוונטי אליך",
-                desc: "שוכר? אין רישום טאבו. עצמאי? מע״מ. שכיר? מעביד. כל שאלה באונבורדינג מצמצמת את הרשימה בפועל.",
+                badge: "ניהול לידים",
+                title: "כל פנייה נרשמת, מסוכמת ומסווגת",
+                desc: "ה-AI קולט כל ליד, מסכם את הפנייה ומסווג לפי עניין — בלי עבודה ידנית.",
               },
               {
-                badge: "לוח זמנים של החוק",
-                title: "דדליינים מחושבים מתאריך המעבר",
-                desc: "30 יום למשרד הפנים, 30 לארנונה, 60 לרישיון. המערכת יוצרת אוטומטית תזכורת שבוע לפני כל אחד.",
+                badge: "Follow-up אוטומטי",
+                title: "המערכת יוצרת משימות follow-up בלי שתצטרך לזכור",
+                desc: "3 תהליכי follow-up מובנים מראש. ClinicFlow AI יודעת מתי לתזכר ומה להגיד.",
               },
               {
-                badge: "פרטים חוזרים פעם אחת",
-                title: "מילאת? לא תמלא שוב",
-                desc: "ת.ז, טלפון, כתובת — מוזנים פעם אחת ב-/settings ומופיעים כ-'העתק בלחיצה' בכל משימה.",
+                badge: "סיכום AI",
+                title: "כל ליד מגיע עם תקציר חכם של הפנייה",
+                desc: "חוסך זמן פתיחת שיחה מחדש — כל הקשר הפנייה נגיש בלחיצה אחת.",
               },
             ].map((f) => (
               <div
@@ -252,34 +253,34 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-primary mb-3">
-              מה המערכת מסתכלת עליו בשבילך
+              מה המערכת עושה בשבילך
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              4 קטגוריות, משימה אחר משימה. כל שלב עם מסמכים ישירים ולינק רשמי.
+              4 יכולות מרכזיות שמוודאות שאף ליד לא נופל בין הכיסאות.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
               {
-                icon: "🏛️",
-                title: "שינוי כתובת רשמית",
-                desc: "משרד הפנים, ביטוח לאומי, קופת חולים, בנק, רישיון נהיגה — כל שלב עם מסמכים ולינק ישיר.",
+                icon: "📋",
+                title: "ניהול לידים",
+                desc: "כל פנייה נרשמת, מסוכמת ומסווגת — ווטסאפ, אינסטגרם, טלפון. הכל במקום אחד.",
               },
               {
-                icon: "🏙️",
-                title: "ארנונה עירונית",
-                desc: "הצהרת מעבר בעירייה החדשה, ביטול בישנה, בדיקת זכאות להנחות. גם לפי סוג המגורים.",
+                icon: "🔔",
+                title: "Follow-up אוטומטי",
+                desc: "המערכת יוצרת משימות follow-up בלי שתצטרך לזכור. 3 תהליכים מובנים מראש.",
               },
               {
-                icon: "💰",
-                title: "רשות המסים",
-                desc: "עדכון מס הכנסה, הודעה למעביד (לשכירים), מע״מ (לעצמאיים). המערכת יודעת מה רלוונטי אליך.",
+                icon: "🤖",
+                title: "סיכום AI",
+                desc: "כל ליד מגיע עם תקציר חכם של הפנייה. חוסך זמן ומונע אי-הבנות.",
               },
               {
-                icon: "📄",
-                title: "מסמכים מאובטחים",
-                desc: "העלה חוזה, נסח טאבו, ת.ז. הכל במקום אחד. הורדה מהירה כשיוצאים לסניף.",
+                icon: "📊",
+                title: "דשבורד בזמן אמת",
+                desc: "ראה מה חדש, מה בטיפול ומה נפל בין הכיסאות — כולם בלוח אחד.",
               },
             ].map((f) => (
               <div
@@ -307,7 +308,7 @@ export default async function HomePage() {
       <section className="py-16 lg:py-24 border-t border-border">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="font-display text-3xl lg:text-4xl font-bold text-primary mb-4">
-            המעבר הבא שלך. מאורגן.
+            הקליניקה הבאה שלך. מאורגנת.
           </h2>
           <p className="text-muted-foreground mb-8 leading-relaxed">
             הרשמה בלחיצה. ה-onboarding לוקח דקה. אפשר להתחיל כבר עכשיו.
@@ -316,7 +317,7 @@ export default async function HomePage() {
             href="/register"
             className="inline-flex items-center justify-center h-14 px-8 rounded-lg bg-highlight text-highlight-foreground font-semibold text-lg hover:bg-highlight-hover transition-all active:scale-[0.98] shadow-card"
           >
-            יצירת חשבון חינם
+            התחל בחינם
           </Link>
           <p className="mt-4 text-sm text-muted-foreground">
             כבר יש לך חשבון?{" "}
@@ -333,7 +334,7 @@ export default async function HomePage() {
       {/* ─── Footer ──────────────────────────────────────────── */}
       <footer className="border-t border-border bg-surface-raised py-8">
         <div className="max-w-6xl mx-auto px-6 text-center text-xs text-muted-foreground">
-          MoveEasy Israel · כלי עזר לניהול מעבר דירה בישראל · לא מחליף ייעוץ משפטי
+          ClinicFlow AI — back office חכם לקליניקות אסתטיקה
         </div>
       </footer>
     </main>
