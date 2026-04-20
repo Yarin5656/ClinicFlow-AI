@@ -11,7 +11,7 @@ import {
   type ReminderItemData,
 } from "@/components/reminders/ReminderItem"
 
-export const metadata = { title: "תזכורות — MoveEasy Israel" }
+export const metadata = { title: "תזכורות — ClinicFlow AI" }
 
 export default async function RemindersPage() {
   const session = await getServerSession(authOptions)

@@ -18,8 +18,8 @@ const frankRuhlLibre = Frank_Ruhl_Libre({
 })
 
 export const metadata: Metadata = {
-  title: "MoveEasy Israel — מעבר דירה בקלות",
-  description: "נהל את כל הביורוקרטיה של מעבר הדירה שלך במקום אחד",
+  title: "ClinicFlow AI — Back Office לקליניקות אסתטיקה",
+  description: "מרכז פניות, פולואפים אוטומטיים ודשבורד לידים לקליניקות אסתטיקה",
   other: { "content-language": "he" },
 }
 

@@ -1,0 +1,201 @@
+<style>
+  .db-wrap { font-family: 'Segoe UI', sans-serif; direction: rtl; }
+  .db-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+  .db-title { font-size:22px; font-weight:700; color:#0f172a; }
+  .db-subtitle { font-size:13px; color:#64748b; }
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  .stat-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:16px 20px; }
+  .stat-label { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:#94a3b8; margin-bottom:6px; }
+  .stat-value { font-size:28px; font-weight:700; color:#0f172a; }
+  .stat-value.green { color:#16a34a; }
+  .stat-value.red { color:#dc2626; }
+  .stat-value.amber { color:#d97706; }
+  .section-title { font-size:14px; font-weight:600; color:#0f172a; margin-bottom:12px; }
+  .lead-table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; border:1px solid #e2e8f0; }
+  .lead-table th { background:#f8fafc; font-size:11px; text-transform:uppercase; color:#94a3b8; padding:10px 16px; text-align:right; font-weight:500; border-bottom:1px solid #e2e8f0; }
+  .lead-table td { padding:12px 16px; font-size:13px; color:#374151; border-bottom:1px solid #f1f5f9; }
+  .lead-table tr:last-child td { border-bottom:none; }
+  .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+  .badge-new { background:#dbeafe; color:#1d4ed8; }
+  .badge-followup { background:#fef3c7; color:#92400e; }
+  .badge-booked { background:#dcfce7; color:#15803d; }
+  .badge-lost { background:#fee2e2; color:#991b1b; }
+  .badge-quoted { background:#f3e8ff; color:#6b21a8; }
+  .overdue-tag { color:#dc2626; font-size:11px; font-weight:600; }
+  .action-btn { background:#15803d; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; }
+  .ai-pill { background:#1e293b; color:#86efac; font-size:11px; padding:3px 8px; border-radius:20px; display:inline-block; margin-top:4px; }
+  .two-col { display:grid; grid-template-columns:1fr 320px; gap:16px; margin-top:20px; }
+  .follow-up-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:16px; }
+  .fu-item { padding:10px 0; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center; }
+  .fu-item:last-child { border-bottom:none; }
+  .fu-name { font-size:13px; font-weight:600; color:#0f172a; }
+  .fu-meta { font-size:11px; color:#94a3b8; margin-top:2px; }
+  .fu-due { font-size:11px; font-weight:600; }
+  .fu-due.overdue { color:#dc2626; }
+  .fu-due.today { color:#d97706; }
+  .fu-due.ok { color:#16a34a; }
+  .sidebar-mock { width:220px; min-height:500px; background:#0f172a; border-radius:10px; padding:20px 16px; display:flex; flex-direction:column; gap:4px; }
+  .sb-logo { color:#fff; font-weight:700; font-size:15px; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+  .sb-logo span { color:#4ade80; }
+  .sb-item { color:#94a3b8; font-size:13px; padding:8px 10px; border-radius:6px; display:flex; align-items:center; gap:8px; }
+  .sb-item.active { background:#1e293b; color:#fff; }
+  .sb-item .dot { width:6px; height:6px; border-radius:50%; background:#4ade80; }
+  .full-layout { display:grid; grid-template-columns:220px 1fr; gap:0; }
+  .main-area { background:#f8fafc; padding:24px; border-radius:0 10px 10px 0; }
+</style>
+
+<h2>Dashboard — ClinicFlow AI</h2>
+<p class="subtitle">כך ייראה המסך הראשי אחרי הפיבוט. לחץ לבחור אם הכיוון נכון.</p>
+
+<div class="options" style="margin-bottom:24px">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>הכיוון נכון — המשך לעיצוב מפורט</h3>
+      <p>מאשר את הלייאאוט הזה כבסיס</p>
+    </div>
+  </div>
+  <div class="option" data-choice="change" onclick="toggleSelect(this)">
+    <div class="letter">✎</div>
+    <div class="content">
+      <h3>צריך שינויים</h3>
+      <p>כתוב בטרמינל מה רוצה לשנות</p>
+    </div>
+  </div>
+</div>
+
+<div class="db-wrap">
+  <div class="full-layout">
+    <!-- Sidebar -->
+    <div class="sidebar-mock">
+      <div class="sb-logo">🏥 <span>ClinicFlow</span> AI</div>
+      <div class="sb-item active"><div class="dot"></div> דשבורד</div>
+      <div class="sb-item">👥 לידים</div>
+      <div class="sb-item">✅ משימות Follow-up</div>
+      <div class="sb-item">📋 רשימת לקוחות</div>
+      <div class="sb-item">🔔 תזכורות</div>
+      <div class="sb-item" style="margin-top:auto">⚙️ הגדרות</div>
+    </div>
+
+    <!-- Main -->
+    <div class="main-area">
+      <div class="db-header">
+        <div>
+          <div class="db-title">שלום, ד״ר כהן 👋</div>
+          <div class="db-subtitle">יום ראשון, 20 באפריל 2026</div>
+        </div>
+        <button class="action-btn">+ ליד חדש</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">לידים חדשים היום</div>
+          <div class="stat-value green">4</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">ממתינים לטיפול</div>
+          <div class="stat-value amber">11</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">follow-ups באיחור</div>
+          <div class="stat-value red">3</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">תורים הוזמנו החודש</div>
+          <div class="stat-value">28</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Leads table -->
+        <div>
+          <div class="section-title">לידים אחרונים</div>
+          <table class="lead-table">
+            <thead>
+              <tr>
+                <th>שם</th>
+                <th>טיפול מבוקש</th>
+                <th>מקור</th>
+                <th>סטטוס</th>
+                <th>נוצר ע״י AI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>מיכל לוי</strong><br><span style="color:#94a3b8;font-size:11px">052-111-2233</span></td>
+                <td>בוטוקס פנים</td>
+                <td>Instagram</td>
+                <td><span class="badge badge-new">חדש</span></td>
+                <td><span class="ai-pill">✦ סוכם</span></td>
+              </tr>
+              <tr>
+                <td><strong>אורי גולן</strong><br><span style="color:#94a3b8;font-size:11px">054-887-6655</span></td>
+                <td>פילר שפתיים</td>
+                <td>WhatsApp</td>
+                <td><span class="badge badge-followup">follow-up</span></td>
+                <td><span class="ai-pill">✦ נוצרה משימה</span></td>
+              </tr>
+              <tr>
+                <td><strong>שרה אביב</strong><br><span style="color:#94a3b8;font-size:11px">058-334-9988</span></td>
+                <td>הסרת שיער לייזר</td>
+                <td>Google</td>
+                <td><span class="badge badge-quoted">הצעת מחיר</span></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><strong>דן רוזן</strong><br><span style="color:#94a3b8;font-size:11px">050-223-4411</span></td>
+                <td>פנים מלאה</td>
+                <td>חבר מביא חבר</td>
+                <td><span class="badge badge-booked">נקבע תור</span></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><strong>נועה כץ</strong><br><span style="color:#94a3b8;font-size:11px">053-667-8800</span></td>
+                <td>RF הידוק עור</td>
+                <td>Facebook</td>
+                <td><span class="badge badge-lost">לא מתקדם</span></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Follow-ups sidebar -->
+        <div>
+          <div class="section-title">follow-ups דחופים</div>
+          <div class="follow-up-card">
+            <div class="fu-item">
+              <div>
+                <div class="fu-name">אורי גולן</div>
+                <div class="fu-meta">פילר שפתיים · נוצר ע״י AI</div>
+              </div>
+              <div class="fu-due overdue">⚠ איחור 2י</div>
+            </div>
+            <div class="fu-item">
+              <div>
+                <div class="fu-name">רינת מזרחי</div>
+                <div class="fu-meta">בוטוקס מצח</div>
+              </div>
+              <div class="fu-due today">היום</div>
+            </div>
+            <div class="fu-item">
+              <div>
+                <div class="fu-name">שרה אביב</div>
+                <div class="fu-meta">לאשר הצעת מחיר</div>
+              </div>
+              <div class="fu-due ok">מחר</div>
+            </div>
+            <div class="fu-item">
+              <div>
+                <div class="fu-name">יובל שמש</div>
+                <div class="fu-meta">לייזר — זמן ההתייעצות</div>
+              </div>
+              <div class="fu-due ok">22/4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

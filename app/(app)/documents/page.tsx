@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/ui/EmptyState"
 import { DocumentList } from "@/components/documents/DocumentList"
 import { UploadZone } from "@/components/documents/UploadZone"
 
-export const metadata = { title: "המסמכים שלי — MoveEasy Israel" }
+export const metadata = { title: "מסמכים — ClinicFlow AI" }
 
 export default async function DocumentsPage() {
   const session = await getServerSession(authOptions)

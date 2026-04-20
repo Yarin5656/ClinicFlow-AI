@@ -1,0 +1,161 @@
+<style>
+  .wrap { font-family:'Segoe UI',sans-serif; direction:rtl; max-width:900px; }
+  .page-title { font-size:20px; font-weight:700; color:#0f172a; margin-bottom:4px; }
+  .breadcrumb { font-size:12px; color:#94a3b8; margin-bottom:20px; }
+  .two-col { display:grid; grid-template-columns:1fr 300px; gap:16px; }
+  .card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; margin-bottom:14px; }
+  .card-title { font-size:13px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.4px; margin-bottom:14px; }
+  .field-row { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid #f1f5f9; font-size:13px; }
+  .field-row:last-child { border-bottom:none; }
+  .field-label { color:#94a3b8; }
+  .field-val { color:#0f172a; font-weight:500; }
+  .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+  .badge-new { background:#dbeafe; color:#1d4ed8; }
+  .badge-followup { background:#fef3c7; color:#92400e; }
+  .ai-box { background:#0f172a; border-radius:10px; padding:16px; color:#fff; margin-bottom:14px; }
+  .ai-header { display:flex; align-items:center; gap:8px; font-size:12px; color:#4ade80; font-weight:600; margin-bottom:10px; }
+  .ai-header span { font-size:16px; }
+  .ai-summary { font-size:13px; color:#cbd5e1; line-height:1.6; }
+  .ai-tag { display:inline-block; background:#1e293b; color:#86efac; font-size:11px; padding:2px 8px; border-radius:20px; margin:4px 2px; }
+  .timeline { list-style:none; padding:0; margin:0; }
+  .tl-item { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+  .tl-item:last-child { border-bottom:none; }
+  .tl-dot { width:8px; height:8px; border-radius:50%; background:#4ade80; margin-top:4px; flex-shrink:0; }
+  .tl-dot.gray { background:#e2e8f0; }
+  .tl-text { font-size:12px; color:#374151; }
+  .tl-time { font-size:11px; color:#94a3b8; }
+  .fu-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+  .fu-item:last-child { border-bottom:none; }
+  .fu-title { font-size:13px; font-weight:600; color:#0f172a; }
+  .fu-meta { font-size:11px; color:#94a3b8; }
+  .fu-due { font-size:11px; font-weight:600; color:#d97706; }
+  .btn-primary { background:#15803d; color:#fff; border:none; border-radius:6px; padding:8px 16px; font-size:13px; cursor:pointer; margin-left:8px; }
+  .btn-ghost { background:#f1f5f9; color:#374151; border:none; border-radius:6px; padding:8px 16px; font-size:13px; cursor:pointer; }
+  .status-row { display:flex; gap:8px; margin-bottom:16px; }
+  .status-step { flex:1; text-align:center; padding:8px; border-radius:8px; font-size:11px; font-weight:600; border:2px solid transparent; }
+  .status-step.done { background:#dcfce7; color:#15803d; border-color:#86efac; }
+  .status-step.active { background:#0f172a; color:#4ade80; border-color:#4ade80; }
+  .status-step.pending { background:#f8fafc; color:#94a3b8; border-color:#e2e8f0; }
+</style>
+
+<h2>מסך ליד — ClinicFlow AI</h2>
+<p class="subtitle">כך ייראה דף הליד הבודד אחרי שנכנסת פנייה חדשה</p>
+
+<div class="options" style="margin-bottom:20px">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content"><h3>מאשר — המשך לתכנית מפורטת</h3><p>הלייאאוט ומבנה המידע מתאים</p></div>
+  </div>
+  <div class="option" data-choice="change" onclick="toggleSelect(this)">
+    <div class="letter">✎</div>
+    <div class="content"><h3>צריך שינויים</h3><p>כתוב בטרמינל</p></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="breadcrumb">לידים › מיכל לוי</div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+    <div>
+      <div class="page-title">מיכל לוי</div>
+      <div style="font-size:13px;color:#64748b">052-111-2233 · Instagram · נכנס לפני 2 שעות</div>
+    </div>
+    <div>
+      <button class="btn-primary">+ קבע תור</button>
+      <button class="btn-ghost">שלח WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- Status pipeline -->
+  <div class="status-row">
+    <div class="status-step done">✓ ליד חדש</div>
+    <div class="status-step active">◉ follow-up</div>
+    <div class="status-step pending">הצעת מחיר</div>
+    <div class="status-step pending">נקבע תור</div>
+    <div class="status-step pending">הגיע / לא הגיע</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <!-- AI Summary -->
+      <div class="ai-box">
+        <div class="ai-header"><span>✦</span> סיכום AI של הפנייה</div>
+        <div class="ai-summary">
+          מיכל פנתה דרך Instagram ביקשה מידע על בוטוקס לפנים. ציינה שמעולם לא עשתה טיפול וחוששת קצת. מתעניינת במחירים ובזמן ההחלמה. מתאימה ל<strong style="color:#4ade80">ייעוץ ראשוני</strong>.
+        </div>
+        <div style="margin-top:10px">
+          <span class="ai-tag">בוטוקס</span>
+          <span class="ai-tag">לקוחה חדשה</span>
+          <span class="ai-tag">חוששת</span>
+          <span class="ai-tag">שאלות מחיר</span>
+        </div>
+      </div>
+
+      <!-- Client details -->
+      <div class="card">
+        <div class="card-title">פרטי ליד</div>
+        <div class="field-row"><span class="field-label">שם מלא</span><span class="field-val">מיכל לוי</span></div>
+        <div class="field-row"><span class="field-label">טלפון</span><span class="field-val">052-111-2233</span></div>
+        <div class="field-row"><span class="field-label">מקור</span><span class="field-val">Instagram</span></div>
+        <div class="field-row"><span class="field-label">טיפול מבוקש</span><span class="field-val">בוטוקס פנים</span></div>
+        <div class="field-row"><span class="field-label">סטטוס</span><span class="field-val"><span class="badge badge-followup">follow-up</span></span></div>
+        <div class="field-row"><span class="field-label">הערות</span><span class="field-val">לקוחה חדשה, חוששת מטיפול</span></div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Follow-up tasks -->
+      <div class="card">
+        <div class="card-title">משימות follow-up</div>
+        <div class="fu-item">
+          <div>
+            <div class="fu-title">צור קשר ראשוני</div>
+            <div class="fu-meta">נוצר אוטומטית ע״י AI</div>
+          </div>
+          <div class="fu-due">היום</div>
+        </div>
+        <div class="fu-item">
+          <div>
+            <div class="fu-title">שלח מחירון + לפני/אחרי</div>
+            <div class="fu-meta">אם לא ענתה תוך 48 שעות</div>
+          </div>
+          <div class="fu-due" style="color:#94a3b8">21/4</div>
+        </div>
+        <div class="fu-item">
+          <div>
+            <div class="fu-title">תזכורת סגירה</div>
+            <div class="fu-meta">follow-up שני אם אין תגובה</div>
+          </div>
+          <div class="fu-due" style="color:#94a3b8">24/4</div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-title">היסטוריה</div>
+        <ul class="timeline">
+          <li class="tl-item">
+            <div class="tl-dot"></div>
+            <div>
+              <div class="tl-text">ליד נכנס מ-Instagram</div>
+              <div class="tl-time">היום, 09:14</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-dot"></div>
+            <div>
+              <div class="tl-text">AI סיכם את הפנייה ויצר 3 משימות follow-up</div>
+              <div class="tl-time">היום, 09:14</div>
+            </div>
+          </li>
+          <li class="tl-item">
+            <div class="tl-dot gray"></div>
+            <div>
+              <div class="tl-text" style="color:#94a3b8">ממתין לפעולה ראשונה...</div>
+              <div class="tl-time"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { LoginForm } from "@/components/auth/LoginForm"
 
-export const metadata = { title: "התחברות — MoveEasy Israel" }
+export const metadata = { title: "התחברות — ClinicFlow AI" }
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions)
@@ -19,8 +19,8 @@ export default async function LoginPage() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 75% 20%, oklch(94% 0.04 150 / 0.6), transparent 60%), " +
-            "radial-gradient(ellipse at 15% 90%, oklch(94% 0.025 245 / 0.7), transparent 60%)",
+            "radial-gradient(ellipse at 75% 20%, oklch(94% 0.05 10 / 0.6), transparent 60%), " +
+            "radial-gradient(ellipse at 15% 90%, oklch(94% 0.04 10 / 0.4), transparent 60%)",
         }}
       />
       <div
@@ -40,10 +40,10 @@ export default async function LoginPage() {
             className="inline-flex items-baseline gap-1.5 mb-4"
           >
             <span className="font-display text-2xl font-bold text-primary">
-              MoveEasy
+              ClinicFlow
             </span>
             <span className="text-xs text-[var(--color-highlight)] font-semibold uppercase tracking-wider">
-              ישראל
+              AI
             </span>
           </Link>
           <h1 className="font-display text-2xl font-bold text-[var(--color-text)] mb-1">

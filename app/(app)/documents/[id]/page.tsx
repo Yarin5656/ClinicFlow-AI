@@ -12,7 +12,7 @@ interface Props {
   params: { id: string }
 }
 
-export const metadata = { title: "פרטי מסמך — MoveEasy Israel" }
+export const metadata = { title: "פרטי מסמך — ClinicFlow AI" }
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`

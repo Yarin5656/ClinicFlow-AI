@@ -6,7 +6,7 @@ import { PageHero } from "@/components/layout/PageHero"
 import { Card } from "@/components/ui/Card"
 import { ProfileForm } from "@/components/settings/ProfileForm"
 
-export const metadata = { title: "הפרופיל שלי — MoveEasy Israel" }
+export const metadata = { title: "הגדרות — ClinicFlow AI" }
 
 export default async function SettingsPage() {
   const session = await getServerSession(authOptions)
@@ -51,7 +51,7 @@ export default async function SettingsPage() {
               }}
             >
               <span className="font-display font-bold text-[11px] tracking-[0.08em]">
-                MoveEasy ·
+                ClinicFlow ·
                 {user.idNumber ? ` ID ${user.idNumber.slice(-4)}` : " פרופיל"}
               </span>
             </div>
@@ -61,8 +61,7 @@ export default async function SettingsPage() {
               פרטים אישיים
             </h2>
             <p className="text-sm text-muted-foreground">
-              הנתונים פה לא נשלחים לאף גוף. הם רק משמשים אותך להעתקה מהירה
-              כשאתה ממלא טפסים ממשלתיים.
+              הפרטים שלך — שם, אימייל וטלפון — מופיעים בפרופיל הקליניקה.
             </p>
           </div>
           <ProfileForm defaults={user} />
