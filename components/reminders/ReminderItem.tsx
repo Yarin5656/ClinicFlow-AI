@@ -13,7 +13,7 @@ export interface ReminderItemData {
   isAutomatic?: boolean
   task: {
     id: string
-    workflowStep: { title: string }
+    workflowStep: { title: string } | null
   } | null
 }
 
@@ -112,7 +112,7 @@ export function ReminderItem({ reminder }: Props) {
                 href={`/tasks/${reminder.task.id}`}
                 className="text-accent hover:underline underline-offset-2 truncate"
               >
-                {reminder.task.workflowStep.title}
+                {reminder.task.workflowStep?.title}
               </Link>
             </>
           )}

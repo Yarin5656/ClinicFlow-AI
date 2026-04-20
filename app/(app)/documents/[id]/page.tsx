@@ -65,7 +65,7 @@ export default async function DocumentDetailPage({ params }: Props) {
                         href={`/tasks/${doc.task.id}`}
                         className="text-accent hover:underline underline-offset-2"
                       >
-                        {doc.task.workflowStep.title}
+                        {doc.task.workflowStep?.title}
                       </Link>
                     </>
                   )}

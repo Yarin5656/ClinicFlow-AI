@@ -66,8 +66,8 @@ export default async function DocumentsPage() {
     if (!groupMap.has(key)) {
       groupMap.set(key, {
         key,
-        title: doc.task?.workflowStep.title ?? "מסמכים כלליים",
-        subtitle: doc.task?.workflowStep.workflow.title ?? null,
+        title: doc.task?.workflowStep?.title ?? "מסמכים כלליים",
+        subtitle: doc.task?.workflowStep?.workflow.title ?? null,
         taskId: doc.task?.id ?? null,
         docs: [],
       })

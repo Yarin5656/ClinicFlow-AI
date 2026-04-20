@@ -56,6 +56,7 @@ export default async function TaskDetailPage({ params }: Props) {
   if (task.userId !== userId) redirect("/dashboard")
 
   const step = task.workflowStep
+  if (!step) notFound()
   const workflow = step.workflow
   const requiredDocs = (step.requiredDocuments as RequiredDocument[] | null) ?? []
   const externalLinks = (step.externalLinks as ExternalLink[] | null) ?? []

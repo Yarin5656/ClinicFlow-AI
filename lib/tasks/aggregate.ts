@@ -20,6 +20,7 @@ export async function getUserWorkflowsWithProgress(userId: string): Promise<Work
   const byWorkflow = new Map<string, WorkflowCardData & { order: number; firstPendingOrder: number }>()
 
   for (const task of tasks) {
+    if (!task.workflowStep) continue
     const wf = task.workflowStep.workflow
     if (!byWorkflow.has(wf.slug)) {
       byWorkflow.set(wf.slug, {
@@ -45,7 +46,7 @@ export async function getUserWorkflowsWithProgress(userId: string): Promise<Work
 
     // First pending/in-progress task (by step order) becomes the "next task" hint
     if (task.status !== "DONE" && task.status !== "SKIPPED") {
-      if (task.workflowStep.order < entry.firstPendingOrder) {
+      if (task.workflowStep?.order < entry.firstPendingOrder) {
         entry.firstPendingOrder = task.workflowStep.order
         entry.nextTaskTitle = task.workflowStep.title
       }

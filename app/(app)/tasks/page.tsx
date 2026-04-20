@@ -58,7 +58,7 @@ export default async function TasksPage({ searchParams }: Props) {
   for (const s of statusOrder) grouped.set(s, [])
   for (const t of tasks) grouped.get(t.status as TaskStatus)?.push(t)
 
-  const workflowTitle = tasks[0]?.workflowStep.workflow.title ?? "כל המשימות"
+  const workflowTitle = tasks[0]?.workflowStep?.workflow.title ?? "כל המשימות"
   const meta = workflowSlug ? WORKFLOW_META[workflowSlug] : null
   const doneCount = tasks.filter((t) => t.status === "DONE").length
 
@@ -120,9 +120,9 @@ export default async function TasksPage({ searchParams }: Props) {
                       key={task.id}
                       taskId={task.id}
                       status={task.status as TaskStatus}
-                      title={task.workflowStep.title}
-                      workflowTitle={task.workflowStep.workflow.title}
-                      order={task.workflowStep.order}
+                      title={task.workflowStep?.title ?? ""}
+                      workflowTitle={task.workflowStep?.workflow.title ?? ""}
+                      order={task.workflowStep?.order ?? 0}
                       docCount={task._count.documents}
                       index={idx}
                     />
