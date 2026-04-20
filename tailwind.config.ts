@@ -55,8 +55,8 @@ const config: Config = {
         xl: "20px",
       },
       boxShadow: {
-        card: "0 1px 3px oklch(18% 0.03 245 / 0.08), 0 1px 2px oklch(18% 0.03 245 / 0.06)",
-        "card-hover": "0 4px 12px oklch(18% 0.03 245 / 0.12), 0 2px 4px oklch(18% 0.03 245 / 0.08)",
+        card: "0 1px 3px oklch(18% 0.03 40 / 0.08), 0 1px 2px oklch(18% 0.03 40 / 0.06)",
+        "card-hover": "0 4px 12px oklch(18% 0.03 40 / 0.12), 0 2px 4px oklch(18% 0.03 40 / 0.08)",
         input: "0 0 0 3px var(--color-ring)",
       },
       animation: {

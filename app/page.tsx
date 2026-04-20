@@ -41,7 +41,7 @@ export default async function HomePage() {
 
       {/* ─── Hero ────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-pending-surface)] to-transparent pointer-events-none" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-highlight-soft)] to-transparent pointer-events-none" aria-hidden />
         <div className="relative max-w-6xl mx-auto px-6 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Copy */}
           <div className="animate-fade-in">
@@ -186,7 +186,7 @@ export default async function HomePage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="bg-[oklch(30%_0.07_245)] rounded-xl p-5 text-center border border-white/5"
+                className="bg-[oklch(28%_0.04_40)] rounded-xl p-5 text-center border border-white/5"
               >
                 <div className="font-display font-bold text-[var(--color-highlight)] mb-1 tabular-nums flex items-baseline justify-center gap-1">
                   <span className="text-4xl lg:text-5xl">{item.stat}</span>

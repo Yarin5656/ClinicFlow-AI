@@ -4,36 +4,39 @@
 
 /* ─── OKLCH Design Tokens ─────────────────────────────────── */
 :root {
-  --color-primary:          oklch(25% 0.08 245);
-  --color-primary-hover:    oklch(20% 0.09 245);
-  --color-primary-fg:       oklch(97% 0.004 245);
+  /* Warm espresso — deep authority without cold navy */
+  --color-primary:          oklch(21% 0.04 40);
+  --color-primary-hover:    oklch(17% 0.035 40);
+  --color-primary-fg:       oklch(97% 0.004 65);
 
-  --color-accent:           oklch(52% 0.12 200);
-  --color-accent-hover:     oklch(46% 0.13 200);
-  --color-accent-fg:        oklch(97% 0.003 200);
+  /* Warm amber — secondary actions */
+  --color-accent:           oklch(68% 0.1 75);
+  --color-accent-hover:     oklch(62% 0.11 75);
+  --color-accent-fg:        oklch(15% 0.03 40);
 
-  /* Highlight — vivid green for "זמן חסכוני / במקום אחד" messaging */
-  --color-highlight:        oklch(60% 0.18 150);
-  --color-highlight-hover:  oklch(54% 0.19 150);
-  --color-highlight-fg:     oklch(98% 0.004 150);
-  --color-highlight-soft:   oklch(94% 0.05 150);
+  /* Dusty rose — the aesthetic clinic signature color */
+  --color-highlight:        oklch(58% 0.13 10);
+  --color-highlight-hover:  oklch(52% 0.14 10);
+  --color-highlight-fg:     oklch(98% 0.003 10);
+  --color-highlight-soft:   oklch(95.5% 0.04 10);
 
-  --color-surface:          oklch(97.5% 0.006 245);
-  --color-surface-raised:   oklch(99% 0.003 245);
+  /* Warm ivory surfaces — never blue-white or clinical */
+  --color-surface:          oklch(97.5% 0.008 65);
+  --color-surface-raised:   oklch(99.5% 0.004 65);
 
-  --color-text:             oklch(18% 0.03 245);
-  --color-muted-fg:         oklch(52% 0.025 245);
+  --color-text:             oklch(18% 0.03 40);
+  --color-muted-fg:         oklch(55% 0.02 40);
 
-  --color-muted:            oklch(92% 0.012 245);
-  --color-border:           oklch(88% 0.015 245);
-  --color-ring:             oklch(52% 0.12 200 / 0.35);
+  --color-muted:            oklch(92% 0.01 65);
+  --color-border:           oklch(89% 0.012 65);
+  --color-ring:             oklch(58% 0.13 10 / 0.3);
 
   --color-done:             oklch(50% 0.13 150);
   --color-done-surface:     oklch(94% 0.03 150);
   --color-warning:          oklch(60% 0.14 75);
   --color-warning-surface:  oklch(94% 0.04 75);
-  --color-pending:          oklch(52% 0.06 245);
-  --color-pending-surface:  oklch(94% 0.015 245);
+  --color-pending:          oklch(52% 0.06 40);
+  --color-pending-surface:  oklch(94% 0.015 65);
   --color-success:          oklch(50% 0.13 150);
   --color-success-surface:  oklch(94% 0.03 150);
 
