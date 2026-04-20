@@ -4,7 +4,7 @@ import type { WorkflowCardData } from "@/components/tasks/WorkflowCard"
 /** Aggregate all tasks for a user, grouped by workflow, with per-group progress. */
 export async function getUserWorkflowsWithProgress(userId: string): Promise<WorkflowCardData[]> {
   const tasks = await prisma.task.findMany({
-    where: { userId },
+    where: { userId, leadId: null },
     include: {
       workflowStep: {
         include: {

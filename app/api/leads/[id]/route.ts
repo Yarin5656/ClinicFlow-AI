@@ -53,6 +53,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   const parsed = updateLeadSchema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
 
+  // Note: post-treatment and no-show-recovery workflows exist in DB but are not
+  // triggered automatically. Future: call generateFollowUpTasksForLead() on status
+  // transitions to BOOKED or on manual "no-show" marking.
   const updated = await prisma.lead.update({
     where: { id: params.id },
     data: parsed.data,

@@ -8,7 +8,7 @@ import { StatusStamp } from "@/components/ui/StatusStamp"
 import { cn } from "@/lib/utils"
 import type { TaskStatus } from "@/types"
 
-export const metadata = { title: "משימות — MoveEasy Israel" }
+export const metadata = { title: "משימות — ClinicFlow AI" }
 
 interface Props {
   searchParams: { workflow?: string }
@@ -37,6 +37,7 @@ export default async function TasksPage({ searchParams }: Props) {
   const tasks = await prisma.task.findMany({
     where: {
       userId,
+      leadId: null,
       ...(workflowSlug
         ? { workflowStep: { workflow: { slug: workflowSlug } } }
         : {}),

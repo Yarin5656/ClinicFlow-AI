@@ -54,7 +54,11 @@ export async function POST(req: Request) {
     },
   })
 
-  await generateFollowUpTasksForLead(userId, lead.id, "lead-intake")
+  try {
+    await generateFollowUpTasksForLead(userId, lead.id, "lead-intake")
+  } catch {
+    // Lead is saved. Task generation is best-effort — failure here should not fail the lead creation.
+  }
 
   return NextResponse.json(lead, { status: 201 })
 }
