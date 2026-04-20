@@ -63,6 +63,7 @@ export interface ClientRecord {
   treatmentWanted: string | null
   notes: string | null
   createdAt: Date
+  updatedAt: Date
   leads: LeadRecord[]
 }
 
@@ -73,6 +74,7 @@ export interface LeadRecord {
   aiSummary: string | null
   aiTags: string[]
   createdAt: Date
+  updatedAt: Date
   client: { name: string; phone: string; source: string | null }
   tasks: Array<{ id: string; status: string; dueDate: Date | null; workflowStep: { title: string } | null }>
 }
