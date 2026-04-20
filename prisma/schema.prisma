@@ -31,6 +31,7 @@ model User {
   tasks      Task[]
   documents  Document[]
   reminders  Reminder[]
+  clients    Client[]
 }
 
 // ─── Move Context ─────────────────────────────────────────────────
@@ -120,24 +121,28 @@ model WorkflowStep {
 // Enforced by Zod at the API boundary and by TypeScript types.
 
 model Task {
-  id             String     @id @default(cuid())
+  id             String    @id @default(cuid())
   userId         String
-  householdId    String
-  workflowStepId String
-  status         String     @default("PENDING")
+  householdId    String?
+  workflowStepId String?
+  leadId         String?
+  status         String    @default("PENDING")
   dueDate        DateTime?
   completedAt    DateTime?
   notes          String?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  household    Household    @relation(fields: [householdId], references: [id], onDelete: Cascade)
-  workflowStep WorkflowStep @relation(fields: [workflowStepId], references: [id])
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household    Household?    @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  workflowStep WorkflowStep? @relation(fields: [workflowStepId], references: [id])
+  lead         Lead?         @relation(fields: [leadId], references: [id], onDelete: Cascade)
   documents    Document[]
   reminders    Reminder[]
 
-  @@unique([userId, workflowStepId])
+  @@unique([leadId, workflowStepId])
+  @@index([userId])
+  @@index([leadId])
 }
 
 // ─── Documents ────────────────────────────────────────────────────
@@ -146,6 +151,7 @@ model Document {
   id          String   @id @default(cuid())
   userId      String
   taskId      String?
+  clientId    String?
   filename    String
   storagePath String
   mimeType    String
@@ -159,8 +165,9 @@ model Document {
   extractedFields Json?
   uploadedAt  DateTime @default(now())
 
-  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task   Task?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  client Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
 }
 
 // ─── Reminders (in-app only for MVP) ──────────────────────────────
@@ -169,6 +176,7 @@ model Reminder {
   id          String   @id @default(cuid())
   userId      String
   taskId      String?
+  clientId    String?
   message     String
   scheduledAt DateTime
   seen        Boolean  @default(false)
@@ -177,8 +185,41 @@ model Reminder {
   isAutomatic Boolean  @default(false)
   createdAt   DateTime @default(now())
 
-  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task   Task?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  client Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+}
+
+// ─── ClinicFlow: Clients & Leads ─────────────────────────────────
+
+model Client {
+  id              String   @id @default(cuid())
+  userId          String
+  name            String
+  phone           String
+  source          String?
+  treatmentWanted String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leads     Lead[]
+  documents Document[]
+  reminders Reminder[]
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  clientId  String
+  status    String   @default("NEW")
+  aiSummary String?
+  aiTags    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tasks  Task[]
 }
 
 // ─── Admin-editable Content ───────────────────────────────────────

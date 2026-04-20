@@ -52,6 +52,31 @@ export interface WizardAnswers {
 // Task status (mirrors Prisma enum)
 export type TaskStatus = "PENDING" | "IN_PROGRESS" | "DONE" | "SKIPPED"
 
+export type LeadStatus = "NEW" | "FOLLOW_UP" | "QUOTED" | "BOOKED" | "WON" | "LOST"
+
+export interface ClientRecord {
+  id: string
+  userId: string
+  name: string
+  phone: string
+  source: string | null
+  treatmentWanted: string | null
+  notes: string | null
+  createdAt: Date
+  leads: LeadRecord[]
+}
+
+export interface LeadRecord {
+  id: string
+  clientId: string
+  status: LeadStatus
+  aiSummary: string | null
+  aiTags: string[]
+  createdAt: Date
+  client: { name: string; phone: string; source: string | null }
+  tasks: Array<{ id: string; status: string; dueDate: Date | null; workflowStep: { title: string } | null }>
+}
+
 // Task with its workflow step context (used in UI)
 export interface TaskWithStep {
   id: string
