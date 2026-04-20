@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 const navItems = [
-  { href: "/dashboard",  label: "לוח בקרה",     icon: "◉" },
-  { href: "/tasks",      label: "המשימות שלי", icon: "✓" },
-  { href: "/documents",  label: "מסמכים",      icon: "◫" },
-  { href: "/reminders",  label: "תזכורות",     icon: "◐" },
-  { href: "/settings",   label: "הפרופיל שלי", icon: "◎" },
+  { href: "/dashboard", label: "דשבורד",           icon: "◉" },
+  { href: "/leads",     label: "לידים",             icon: "👥" },
+  { href: "/tasks",     label: "משימות Follow-up",  icon: "✓" },
+  { href: "/clients",   label: "לקוחות",            icon: "◫" },
+  { href: "/reminders", label: "תזכורות",           icon: "◐" },
+  { href: "/settings",  label: "הגדרות",            icon: "◎" },
 ]
 
 export function Sidebar() {
@@ -41,9 +42,9 @@ export function Sidebar() {
         className="relative h-16 flex items-center px-5 border-b border-white/10"
       >
         <div className="flex items-baseline gap-1.5">
-          <span className="font-display font-bold text-lg">MoveEasy</span>
+          <span className="font-display font-bold text-lg">ClinicFlow</span>
           <span className="text-[10px] text-[var(--color-highlight)] font-medium uppercase tracking-wider">
-            ישראל
+            AI
           </span>
         </div>
       </Link>
