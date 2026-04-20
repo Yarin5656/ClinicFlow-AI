@@ -1,0 +1,30 @@
+{
+  "slug": "lead-intake",
+  "title": "קליטת ליד חדש",
+  "description": "שלבי טיפול בליד מרגע הכניסה עד סגירה",
+  "isActive": true,
+  "order": 1,
+  "steps": [
+    {
+      "order": 1,
+      "title": "צור קשר ראשוני",
+      "description": "יצירת קשר טלפוני או בוואטסאפ תוך 24 שעות מרגע הפנייה",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "הציג את הקליניקה בקצרה, שאל מה הטיפול המבוקש ומתי נוח"
+    },
+    {
+      "order": 2,
+      "title": "שלח מידע + מחירון",
+      "description": "שלח קישור לתמונות לפני/אחרי רלוונטיות ומחירון",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "אם לא ענה תוך 48 שעות — שלח הודעת follow-up"
+    },
+    {
+      "order": 3,
+      "title": "תזכורת סגירה",
+      "description": "בדוק אם הליד מוכן להזמין תור",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "נסה 3 פעמים מקסימום לפני שמסמן כ'לא מתקדם'"
+    }
+  ]
+}

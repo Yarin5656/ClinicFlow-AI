@@ -1,0 +1,30 @@
+{
+  "slug": "post-treatment",
+  "title": "מעקב אחרי טיפול",
+  "description": "follow-up ללקוחות שהגיעו לטיפול",
+  "isActive": true,
+  "order": 2,
+  "steps": [
+    {
+      "order": 1,
+      "title": "בדיקת שביעות רצון (48 שעות)",
+      "description": "שלח הודעה לבדיקה שהכל בסדר אחרי הטיפול",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "שאל אם יש תופעות לוואי, האם מרוצה מהתוצאה"
+    },
+    {
+      "order": 2,
+      "title": "בקשת ביקורת",
+      "description": "בקש ביקורת ב-Google / Instagram",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "שלח קישור ישיר לדף הביקורות"
+    },
+    {
+      "order": 3,
+      "title": "הצע טיפול חוזר",
+      "description": "הצע תזמון טיפול הבא (בוטוקס כל 4-6 חודשים וכו')",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "ציין את המועד המומלץ הבא לפי סוג הטיפול"
+    }
+  ]
+}

@@ -117,6 +117,12 @@ async function seedWorkflows() {
 
     console.log(`✅ Seeded workflow: ${def.slug} (${def.steps.length} steps)`)
   }
+
+  // Deactivate old MoveEasy workflows — clinic pivot replaces them
+  await prisma.workflow.updateMany({
+    where: { slug: { in: ["address-change", "arnona", "tax-authority"] } },
+    data: { isActive: false },
+  })
 }
 
 async function main() {

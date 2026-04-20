@@ -1,0 +1,30 @@
+{
+  "slug": "no-show-recovery",
+  "title": "שחזור no-show",
+  "description": "טיפול בלקוח שלא הגיע לתור",
+  "isActive": true,
+  "order": 3,
+  "steps": [
+    {
+      "order": 1,
+      "title": "הודעת no-show",
+      "description": "שלח הודעה מנומסת שמציינת שהוא לא הגיע",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "לא לשפוט — הצע גמישות ומועד חלופי"
+    },
+    {
+      "order": 2,
+      "title": "הצע מועד חלופי",
+      "description": "הצע 2-3 מועדים פנויים לתיאום מחדש",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "אם לא ענה תוך 48 שעות — עבור לשלב הבא"
+    },
+    {
+      "order": 3,
+      "title": "הצע הנחה / תמריץ",
+      "description": "אם עדיין אין תגובה, הצע הנחה או ייעוץ חינם",
+      "deadlineDaysAfterMove": null,
+      "helperNotes": "זה הנסיון האחרון לפני שמסגרים את הליד"
+    }
+  ]
+}
