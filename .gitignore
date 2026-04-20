@@ -20,3 +20,4 @@ coverage/
 /prisma/dev.db*
 
 .vercel
+.env.vercel-production
