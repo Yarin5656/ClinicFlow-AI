@@ -51,20 +51,16 @@ export default async function HomePage() {
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-[4.2rem] font-bold text-primary leading-[1.08] mb-5 tracking-tight">
-              הקליניקה שלך.
-              <br />
-              כל ליד.
-              <br />
               <span className="relative inline-block text-[var(--color-highlight)]">
-                בלי להיאבד.
+                אף ליד
                 <svg
-                  viewBox="0 0 320 14"
+                  viewBox="0 0 220 14"
                   preserveAspectRatio="none"
                   aria-hidden
                   className="absolute -bottom-1.5 right-0 w-full h-3 text-[var(--color-highlight)]"
                 >
                   <path
-                    d="M2 8 Q 80 2, 160 8 T 318 6"
+                    d="M2 8 Q 55 2, 110 8 T 218 6"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="3"
@@ -72,10 +68,13 @@ export default async function HomePage() {
                   />
                 </svg>
               </span>
+              {" "}לא נופל
+              <br />
+              בין הכיסאות.
             </h1>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
-              ClinicFlow AI עוקב אחרי כל פנייה, יוצר משימות follow-up אוטומטיות, ומוודא שאף ליד לא נופל בין הכיסאות.
+              ClinicFlow AI מרכז פניות, יוצר פולואפים אוטומטיים ועוזר לקליניקה לסגור יותר תורים בלי בלגן.
             </p>
 
             <div className="flex items-center gap-3 flex-wrap mb-6">
