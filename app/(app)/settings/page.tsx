@@ -30,7 +30,7 @@ export default async function SettingsPage() {
       <PageHero
         eyebrow="הפרופיל האישי"
         title="הפרטים שלך"
-        subtitle="מוזנים פעם אחת — מופיעים כהעתק-בלחיצה בכל משימה"
+        subtitle="הפרטים שלך לחשבון הקליניקה"
       />
 
       <div className="max-w-2xl mx-auto px-6 lg:px-8 py-8 lg:py-10 flex flex-col gap-5">

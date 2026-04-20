@@ -63,7 +63,7 @@ export function CreateReminderForm({ taskId, suggestion, onCreated }: Props) {
     <form onSubmit={onSubmit} className="flex flex-col gap-3">
       <Input
         label="תזכיר לי"
-        placeholder="לדוגמה: לברר על הנחת סטודנט"
+        placeholder="לדוגמה: להתקשר למיכל לוי לאחר הטיפול"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         maxLength={200}

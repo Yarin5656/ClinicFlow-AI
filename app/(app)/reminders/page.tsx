@@ -46,8 +46,8 @@ export default async function RemindersPage() {
   return (
     <div className="flex-1 overflow-auto">
       <PageHero
-        eyebrow="תזכורות · בתוך המערכת"
-        title="מה הבא בתור?"
+        eyebrow="ניהול תזכורות"
+        title="תזכורות"
         subtitle={
           <span>
             {dueUnseen.length > 0 && (

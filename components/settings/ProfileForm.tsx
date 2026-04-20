@@ -86,7 +86,7 @@ export function ProfileForm({ defaults }: Props) {
           className="text-right"
           maxLength={9}
           error={errors.idNumber?.message}
-          hint="משמש להעתקה לטפסים"
+          hint="אופציונלי"
           {...register("idNumber")}
         />
 
