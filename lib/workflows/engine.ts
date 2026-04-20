@@ -67,8 +67,8 @@ export async function generateTasksForUser(
       const stepConditions = (step.triggerConditions ?? {}) as Record<string, unknown>
       if (!matchesConditions(stepConditions, answers)) continue
 
-      const existing = await prisma.task.findUnique({
-        where: { userId_workflowStepId: { userId, workflowStepId: step.id } },
+      const existing = await prisma.task.findFirst({
+        where: { userId, workflowStepId: step.id, leadId: null },
       })
 
       let task = existing
@@ -80,6 +80,7 @@ export async function generateTasksForUser(
             userId,
             householdId,
             workflowStepId: step.id,
+            leadId: null,
             status: "PENDING",
           },
         })
