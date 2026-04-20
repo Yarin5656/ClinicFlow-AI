@@ -64,7 +64,6 @@ export interface ClientRecord {
   notes: string | null
   createdAt: Date
   updatedAt: Date
-  leads: LeadRecord[]
 }
 
 export interface LeadRecord {
@@ -75,8 +74,6 @@ export interface LeadRecord {
   aiTags: string[]
   createdAt: Date
   updatedAt: Date
-  client: { name: string; phone: string; source: string | null }
-  tasks: Array<{ id: string; status: string; dueDate: Date | null; workflowStep: { title: string } | null }>
 }
 
 // Task with its workflow step context (used in UI)
@@ -86,7 +83,7 @@ export interface TaskWithStep {
   dueDate: Date | null
   completedAt: Date | null
   notes: string | null
-  workflowStep: {
+  workflowStep?: {
     id: string
     order: number
     title: string
@@ -99,5 +96,5 @@ export interface TaskWithStep {
       slug: string
       title: string
     }
-  }
+  } | null
 }

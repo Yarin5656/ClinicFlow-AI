@@ -140,7 +140,6 @@ model Task {
   documents    Document[]
   reminders    Reminder[]
 
-  @@unique([leadId, workflowStepId])
   @@index([userId])
   @@index([leadId])
 }
@@ -207,11 +206,16 @@ model Client {
   leads     Lead[]
   documents Document[]
   reminders Reminder[]
+
+  @@index([userId])
 }
 
 model Lead {
   id        String   @id @default(cuid())
   clientId  String
+  // LeadStatus stored as string for consistency with Task.status pattern.
+  // Valid values: "NEW" | "FOLLOW_UP" | "QUOTED" | "BOOKED" | "WON" | "LOST"
+  // Enforced by Zod at the API boundary and by TypeScript types.
   status    String   @default("NEW")
   aiSummary String?
   aiTags    String[]
@@ -220,6 +224,8 @@ model Lead {
 
   client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   tasks  Task[]
+
+  @@index([clientId])
 }
 
 // ─── Admin-editable Content ───────────────────────────────────────
