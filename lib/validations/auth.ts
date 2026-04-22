@@ -12,7 +12,9 @@ export const registerSchema = z.object({
   password: z
     .string()
     .min(8, "הסיסמה חייבת להיות לפחות 8 תווים")
-    .max(100, "הסיסמה ארוכה מדי"),
+    .max(100, "הסיסמה ארוכה מדי")
+    .regex(/[A-Z]/, "הסיסמה חייבת להכיל לפחות אות גדולה אחת")
+    .regex(/[0-9]/, "הסיסמה חייבת להכיל לפחות ספרה אחת"),
 })
 
 export type RegisterInput = z.infer<typeof registerSchema>
