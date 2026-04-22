@@ -14,15 +14,14 @@ const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
   localePrefix: "always",
+  localeDetection: false,
 })
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Let next-intl handle locale routing first
-  const response = intlMiddleware(req)
+  if (pathname.startsWith("/f/")) return NextResponse.next()
 
-  // Determine if this is a protected path: /{locale}/dashboard, /{locale}/leads, etc.
   const segments = pathname.split("/").filter(Boolean)
   const isProtected =
     segments.length >= 2 &&
@@ -39,7 +38,7 @@ export default async function middleware(req: NextRequest) {
     }
   }
 
-  return response
+  return intlMiddleware(req)
 }
 
 export const config = {
