@@ -1,24 +1,25 @@
+import { cache } from "react"
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/db/prisma"
 import { PublicLeadForm } from "@/components/f/PublicLeadForm"
 import type { LeadFormConfig } from "@/lib/validations/lead-form"
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+const getFormConfig = cache(async (slug: string) => {
   const user = await prisma.user.findUnique({
-    where: { leadFormSlug: params.slug },
+    where: { leadFormSlug: slug },
     select: { leadFormConfig: true },
   })
-  const config = user?.leadFormConfig as LeadFormConfig | null
+  return user?.leadFormConfig as LeadFormConfig | null
+})
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const config = await getFormConfig(params.slug)
   return { title: config?.title ?? "השאר פרטים" }
 }
 
 export default async function PublicFormPage({ params }: { params: { slug: string } }) {
-  const user = await prisma.user.findUnique({
-    where: { leadFormSlug: params.slug },
-    select: { leadFormConfig: true },
-  })
+  const config = await getFormConfig(params.slug)
 
-  const config = user?.leadFormConfig as LeadFormConfig | null
   if (!config?.active) notFound()
 
   return (
