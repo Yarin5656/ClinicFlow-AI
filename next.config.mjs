@@ -1,3 +1,7 @@
+import createNextIntlPlugin from "next-intl/plugin"
+
+const withNextIntl = createNextIntlPlugin()
+
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
@@ -10,7 +14,7 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Next.js requires unsafe-eval/inline in dev
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob:",
@@ -29,13 +33,8 @@ const nextConfig = {
     remotePatterns: [],
   },
   async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: securityHeaders,
-      },
-    ]
+    return [{ source: "/(.*)", headers: securityHeaders }]
   },
 }
 
-export default nextConfig
+export default withNextIntl(nextConfig)
