@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
 import { registerSchema, type RegisterInput } from "@/lib/validations/auth"
 
-export function RegisterForm() {
+export function RegisterForm({ locale }: { locale?: string }) {
   const router = useRouter()
   const [serverError, setServerError] = useState<string | null>(null)
 

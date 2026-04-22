@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
 import { loginSchema, type LoginInput } from "@/lib/validations/auth"
 
-export function LoginForm() {
+export function LoginForm({ locale }: { locale?: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard"
