@@ -1,20 +1,21 @@
 "use client"
 
-import { useRouter, usePathname } from "@/lib/i18n/navigation"
+import { useRouter, usePathname, locales } from "@/lib/i18n/navigation"
 import { useLocale } from "next-intl"
+import type { Locale } from "@/lib/i18n/navigation"
 
 const LOCALES = [
-  { code: "he", label: "עב" },
-  { code: "en", label: "EN" },
-  { code: "ru", label: "RU" },
-] as const
+  { code: "he" as Locale, label: "עב" },
+  { code: "en" as Locale, label: "EN" },
+  { code: "ru" as Locale, label: "RU" },
+]
 
 export function LanguageSwitcher() {
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
 
-  const switchLocale = (newLocale: string) => {
+  const switchLocale = (newLocale: Locale) => {
     router.replace(pathname, { locale: newLocale })
   }
 
