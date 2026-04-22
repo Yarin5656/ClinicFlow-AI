@@ -40,25 +40,27 @@ export async function POST(
 
   const { name, phone, treatment, source, message } = parsed.data
 
-  const client = await prisma.client.create({
-    data: {
-      userId: user.id,
-      name,
-      phone,
-      source: source ?? "טופס רשתות חברתיות",
-      treatmentWanted: treatment,
-      notes: message,
-    },
-  })
-
-  const lead = await prisma.lead.create({
-    data: { clientId: client.id, status: "NEW" },
+  const { client, lead } = await prisma.$transaction(async (tx) => {
+    const client = await tx.client.create({
+      data: {
+        userId: user.id,
+        name,
+        phone,
+        source: source ?? "טופס רשתות חברתיות",
+        treatmentWanted: treatment,
+        notes: message,
+      },
+    })
+    const lead = await tx.lead.create({
+      data: { clientId: client.id, status: "NEW" },
+    })
+    return { client, lead }
   })
 
   try {
     await generateFollowUpTasksForLead(user.id, lead.id, "lead-intake")
-  } catch {
-    // best-effort
+  } catch (e) {
+    console.error("[lead-form] workflow error", e)
   }
 
   try {

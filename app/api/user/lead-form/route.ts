@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { prisma } from "@/lib/db/prisma"
 import { saveLeadFormSchema } from "@/lib/validations/lead-form"
+import { Prisma } from "@prisma/client"
 
 export async function GET() {
   const session = await getServerSession(authOptions)
@@ -13,7 +14,8 @@ export async function GET() {
     where: { id: userId },
     select: { leadFormSlug: true, leadFormConfig: true },
   })
-  return NextResponse.json({ leadFormSlug: user?.leadFormSlug, leadFormConfig: user?.leadFormConfig })
+  if (!user) return NextResponse.json({ error: "משתמש לא נמצא" }, { status: 404 })
+  return NextResponse.json({ leadFormSlug: user.leadFormSlug, leadFormConfig: user.leadFormConfig })
 }
 
 export async function PATCH(req: NextRequest) {
@@ -36,19 +38,18 @@ export async function PATCH(req: NextRequest) {
 
   const { slug, config } = parsed.data
 
-  // Check slug uniqueness (excluding current user)
-  const existing = await prisma.user.findFirst({
-    where: { leadFormSlug: slug, NOT: { id: userId } },
-  })
-  if (existing) {
-    return NextResponse.json({ error: "הקישור תפוס, נסה אחר" }, { status: 409 })
+  let updated
+  try {
+    updated = await prisma.user.update({
+      where: { id: userId },
+      data: { leadFormSlug: slug, leadFormConfig: config },
+      select: { leadFormSlug: true, leadFormConfig: true },
+    })
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      return NextResponse.json({ error: "הקישור תפוס, נסה אחר" }, { status: 409 })
+    }
+    throw e
   }
-
-  const updated = await prisma.user.update({
-    where: { id: userId },
-    data: { leadFormSlug: slug, leadFormConfig: config },
-    select: { leadFormSlug: true, leadFormConfig: true },
-  })
-
   return NextResponse.json(updated)
 }
