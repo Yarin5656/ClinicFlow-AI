@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db/prisma"
 import { PageHero } from "@/components/layout/PageHero"
 import { Card } from "@/components/ui/Card"
 import { ProfileForm } from "@/components/settings/ProfileForm"
+import { LeadFormSettings } from "@/components/settings/LeadFormSettings"
+import type { LeadFormConfig } from "@/lib/validations/lead-form"
 import { getTranslations } from "next-intl/server"
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
@@ -18,6 +20,7 @@ export default async function SettingsPage({ params }: { params: { locale: strin
   if (!userId) redirect(`/${params.locale}/login`)
 
   const t = await getTranslations({ locale: params.locale, namespace: "settings" })
+  const tLF = await getTranslations({ locale: params.locale, namespace: "leadForm" })
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -27,6 +30,8 @@ export default async function SettingsPage({ params }: { params: { locale: strin
       idNumber: true,
       phoneNumber: true,
       birthDate: true,
+      leadFormSlug: true,
+      leadFormConfig: true,
     },
   })
   if (!user) redirect(`/${params.locale}/login`)
@@ -90,6 +95,18 @@ export default async function SettingsPage({ params }: { params: { locale: strin
               </span>
             </div>
           </div>
+        </Card>
+        <Card padding="lg">
+          <div className="mb-5">
+            <p className="text-xs uppercase tracking-[0.15em] text-[var(--color-highlight)] font-semibold mb-1">
+              {tLF("sectionTitle")}
+            </p>
+            <p className="text-sm text-muted-foreground">{tLF("sectionSubtitle")}</p>
+          </div>
+          <LeadFormSettings
+            initialSlug={user.leadFormSlug ?? null}
+            initialConfig={user.leadFormConfig as LeadFormConfig | null}
+          />
         </Card>
       </div>
     </div>
