@@ -5,16 +5,11 @@ import { prisma } from "@/lib/db/prisma"
 import { Link } from "@/lib/i18n/navigation"
 import { getTranslations } from "next-intl/server"
 import { NewLeadModal } from "@/components/leads/NewLeadModal"
+import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge"
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   const t = await getTranslations({ locale: params.locale, namespace: "leads" })
   return { title: `${t("title")} — ClinicFlow AI` }
-}
-
-const STATUS_CLASSES: Record<string, string> = {
-  NEW: "bg-blue-100 text-blue-700", FOLLOW_UP: "bg-amber-100 text-amber-800",
-  QUOTED: "bg-purple-100 text-purple-800", BOOKED: "bg-green-100 text-green-800",
-  WON: "bg-emerald-100 text-emerald-800", LOST: "bg-red-100 text-red-800",
 }
 
 export default async function LeadsPage({ params }: { params: { locale: string } }) {
@@ -23,7 +18,6 @@ export default async function LeadsPage({ params }: { params: { locale: string }
   if (!userId) redirect(`/${params.locale}/login`)
 
   const t = await getTranslations({ locale: params.locale, namespace: "leads" })
-  const tStatus = await getTranslations({ locale: params.locale, namespace: "leadStatus" })
   const dateLocale = params.locale === "he" ? "he-IL" : params.locale === "ru" ? "ru-RU" : "en-US"
 
   const leads = await prisma.lead.findMany({
@@ -63,9 +57,7 @@ export default async function LeadsPage({ params }: { params: { locale: string }
                 <td className="px-4 py-3 text-[var(--color-muted-fg)]">{lead.client.treatmentWanted ?? "—"}</td>
                 <td className="px-4 py-3 text-[var(--color-muted-fg)]">{lead.client.source ?? "—"}</td>
                 <td className="px-4 py-3">
-                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${STATUS_CLASSES[lead.status] ?? ""}`}>
-                    {tStatus(lead.status)}
-                  </span>
+                  <LeadStatusBadge leadId={lead.id} status={lead.status as any} />
                 </td>
                 <td className="px-4 py-3 text-center text-[var(--color-muted-fg)]">{lead.tasks.length}</td>
                 <td className="px-4 py-3 text-xs text-[var(--color-muted-fg)]">
