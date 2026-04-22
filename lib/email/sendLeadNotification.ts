@@ -1,7 +1,5 @@
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 interface LeadNotificationParams {
   toEmail: string
   clinicName: string
@@ -13,6 +11,7 @@ interface LeadNotificationParams {
 }
 
 export async function sendLeadNotification(params: LeadNotificationParams): Promise<void> {
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const { toEmail, clinicName, clientName, phone, treatment, message, leadsUrl } = params
 
   const rows = [
