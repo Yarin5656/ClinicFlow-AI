@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
 import { updateProfileSchema, type UpdateProfileInput } from "@/lib/validations/profile"
+import { useTranslations } from "next-intl"
 
 interface Props {
   defaults: {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export function ProfileForm({ defaults }: Props) {
+  const t = useTranslations("settings")
   const router = useRouter()
   const [savedAt, setSavedAt] = useState<number | null>(null)
   const [serverError, setServerError] = useState<string | null>(null)
@@ -48,7 +50,7 @@ export function ProfileForm({ defaults }: Props) {
 
     if (!res.ok) {
       const body = (await res.json().catch(() => ({}))) as { error?: string }
-      setServerError(body.error ?? "שגיאה בשמירה")
+      setServerError(body.error ?? t("errorSave"))
       return
     }
 
@@ -61,38 +63,38 @@ export function ProfileForm({ defaults }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
       <Input
-        label="שם מלא"
-        placeholder="ישראל ישראלי"
+        label={t("fullName")}
+        placeholder={t("fullNamePlaceholder")}
         autoComplete="name"
         error={errors.name?.message}
         {...register("name")}
       />
 
       <Input
-        label="אימייל"
+        label={t("email")}
         type="email"
         value={defaults.email}
         disabled
         dir="ltr"
         className="text-right"
-        hint="לא ניתן לשינוי כרגע"
+        hint={t("emailHint")}
       />
 
       <div className="grid sm:grid-cols-2 gap-4">
         <Input
-          label="תעודת זהות"
-          placeholder="9 ספרות"
+          label={t("idNumber")}
+          placeholder={t("idNumberPlaceholder")}
           dir="ltr"
           className="text-right"
           maxLength={9}
           error={errors.idNumber?.message}
-          hint="אופציונלי"
+          hint={t("idNumberHint")}
           {...register("idNumber")}
         />
 
         <Input
-          label="טלפון"
-          placeholder="050-0000000"
+          label={t("phone")}
+          placeholder={t("phonePlaceholder")}
           type="tel"
           dir="ltr"
           className="text-right"
@@ -103,7 +105,7 @@ export function ProfileForm({ defaults }: Props) {
       </div>
 
       <Input
-        label="תאריך לידה"
+        label={t("birthDate")}
         type="date"
         error={errors.birthDate?.message}
         {...register("birthDate")}
@@ -120,11 +122,11 @@ export function ProfileForm({ defaults }: Props) {
 
       <div className="flex items-center gap-3 pt-2">
         <Button type="submit" loading={isSubmitting}>
-          שמור שינויים
+          {t("save")}
         </Button>
         {savedRecently && (
           <span className="text-sm text-[var(--color-highlight)] animate-fade-in">
-            ✓ נשמר
+            {t("saved")}
           </span>
         )}
       </div>

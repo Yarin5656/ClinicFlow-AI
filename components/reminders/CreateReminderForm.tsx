@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
+import { useTranslations } from "next-intl"
 
 interface Props {
   /** If provided, the reminder is linked to this task. */
@@ -23,6 +24,7 @@ function defaultScheduledAt(): string {
 }
 
 export function CreateReminderForm({ taskId, suggestion, onCreated }: Props) {
+  const t = useTranslations("reminders")
   const router = useRouter()
   const [message, setMessage] = useState(suggestion ?? "")
   const [scheduledAt, setScheduledAt] = useState(defaultScheduledAt())
@@ -46,7 +48,7 @@ export function CreateReminderForm({ taskId, suggestion, onCreated }: Props) {
 
     if (!res.ok) {
       const body = (await res.json().catch(() => ({}))) as { error?: string }
-      setError(body.error ?? "שגיאה ביצירת התזכורת")
+      setError(body.error ?? t("errorCreate"))
       setSubmitting(false)
       return
     }
@@ -62,8 +64,8 @@ export function CreateReminderForm({ taskId, suggestion, onCreated }: Props) {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3">
       <Input
-        label="תזכיר לי"
-        placeholder="לדוגמה: להתקשר למיכל לוי לאחר הטיפול"
+        label={t("remindMe")}
+        placeholder={t("remindMePlaceholder")}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         maxLength={200}
@@ -72,7 +74,7 @@ export function CreateReminderForm({ taskId, suggestion, onCreated }: Props) {
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="scheduledAt" className="text-sm font-medium text-[var(--color-text)]">
-          מתי?
+          {t("when")}
         </label>
         <input
           id="scheduledAt"
@@ -94,7 +96,7 @@ export function CreateReminderForm({ taskId, suggestion, onCreated }: Props) {
       )}
 
       <Button type="submit" loading={submitting} className="self-start">
-        הוספת תזכורת
+        {t("add")}
       </Button>
     </form>
   )

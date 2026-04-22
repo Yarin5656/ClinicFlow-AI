@@ -8,8 +8,10 @@ import { signIn } from "next-auth/react"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
 import { registerSchema, type RegisterInput } from "@/lib/validations/auth"
+import { useTranslations } from "next-intl"
 
 export function RegisterForm({ locale }: { locale?: string }) {
+  const t = useTranslations("auth")
   const router = useRouter()
   const [serverError, setServerError] = useState<string | null>(null)
 
@@ -57,17 +59,17 @@ export function RegisterForm({ locale }: { locale?: string }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
       <Input
-        label="שם מלא"
-        placeholder="ישראל ישראלי"
+        label={t("fullName")}
+        placeholder={t("fullNamePlaceholder")}
         autoComplete="name"
         required
         error={errors.name?.message}
         {...register("name")}
       />
       <Input
-        label="אימייל"
+        label={t("email")}
         type="email"
-        placeholder="name@example.com"
+        placeholder={t("emailPlaceholder")}
         autoComplete="email"
         dir="ltr"
         className="text-right"
@@ -76,13 +78,13 @@ export function RegisterForm({ locale }: { locale?: string }) {
         {...register("email")}
       />
       <Input
-        label="סיסמה"
+        label={t("password")}
         type="password"
-        placeholder="לפחות 8 תווים"
+        placeholder={t("passwordPlaceholder")}
         autoComplete="new-password"
         required
         error={errors.password?.message}
-        hint="לפחות 8 תווים"
+        hint={t("passwordPlaceholder")}
         {...register("password")}
       />
 
@@ -96,7 +98,7 @@ export function RegisterForm({ locale }: { locale?: string }) {
       )}
 
       <Button type="submit" size="lg" loading={isSubmitting} className="mt-2">
-        יצירת חשבון
+        {t("registerSubmit")}
       </Button>
     </form>
   )

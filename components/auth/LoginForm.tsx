@@ -8,8 +8,10 @@ import { signIn } from "next-auth/react"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
 import { loginSchema, type LoginInput } from "@/lib/validations/auth"
+import { useTranslations } from "next-intl"
 
 export function LoginForm({ locale }: { locale?: string }) {
+  const t = useTranslations("auth")
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard"
@@ -45,9 +47,9 @@ export function LoginForm({ locale }: { locale?: string }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
       <Input
-        label="אימייל"
+        label={t("email")}
         type="email"
-        placeholder="name@example.com"
+        placeholder={t("emailPlaceholder")}
         autoComplete="email"
         dir="ltr"
         className="text-right"
@@ -56,8 +58,9 @@ export function LoginForm({ locale }: { locale?: string }) {
         {...register("email")}
       />
       <Input
-        label="סיסמה"
+        label={t("password")}
         type="password"
+        placeholder={t("passwordPlaceholder")}
         autoComplete="current-password"
         required
         error={errors.password?.message}
@@ -74,7 +77,7 @@ export function LoginForm({ locale }: { locale?: string }) {
       )}
 
       <Button type="submit" size="lg" loading={isSubmitting} className="mt-2">
-        התחברות
+        {isSubmitting ? t("loggingIn") : t("submit")}
       </Button>
     </form>
   )
