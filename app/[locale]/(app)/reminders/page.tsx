@@ -10,13 +10,19 @@ import {
   ReminderItem,
   type ReminderItemData,
 } from "@/components/reminders/ReminderItem"
+import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "תזכורות — ClinicFlow AI" }
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "reminders" })
+  return { title: `${t("title")} — ClinicFlow AI` }
+}
 
-export default async function RemindersPage() {
+export default async function RemindersPage({ params }: { params: { locale: string } }) {
   const session = await getServerSession(authOptions)
   const userId = (session?.user as { id?: string } | undefined)?.id
-  if (!userId) redirect("/login")
+  if (!userId) redirect(`/${params.locale}/login`)
+
+  const t = await getTranslations({ locale: params.locale, namespace: "reminders" })
 
   const reminders = await prisma.reminder.findMany({
     where: { userId },
@@ -46,20 +52,19 @@ export default async function RemindersPage() {
   return (
     <div className="flex-1 overflow-auto">
       <PageHero
-        eyebrow="ניהול תזכורות"
-        title="תזכורות"
+        eyebrow={t("eyebrow")}
+        title={t("title")}
         subtitle={
           <span>
             {dueUnseen.length > 0 && (
               <>
                 <span className="text-[var(--color-warning)] font-semibold">
-                  {dueUnseen.length} דורשות טיפול
+                  {t("needsAttention", { count: dueUnseen.length })}
                 </span>
                 <span className="opacity-60 mx-2">·</span>
               </>
             )}
-            {upcoming.length}{" "}
-            {upcoming.length === 1 ? "עתידית" : "עתידיות"}
+            {t("subtitle", { upcoming: upcoming.length })}
           </span>
         }
       />
@@ -67,7 +72,7 @@ export default async function RemindersPage() {
       <div className="max-w-2xl mx-auto px-6 lg:px-8 py-8 lg:py-10 flex flex-col gap-5">
         <Card padding="lg">
           <h3 className="font-display text-base font-bold text-[var(--color-text)] mb-4">
-            תזכורת חדשה
+            {t("newReminder")}
           </h3>
           <CreateReminderForm />
         </Card>
@@ -76,29 +81,29 @@ export default async function RemindersPage() {
           <Card>
             <EmptyState
               icon="◐"
-              title="אין תזכורות עדיין"
-              description="צור תזכורת כדי לא לשכוח משימה חשובה."
+              title={t("noReminders")}
+              description={t("noRemindersDesc")}
             />
           </Card>
         ) : (
           <>
             {dueUnseen.length > 0 && (
               <ReminderSection
-                label="הגיע הזמן"
+                label={t("due")}
                 tone="warning"
                 items={dueUnseen}
               />
             )}
             {upcoming.length > 0 && (
               <ReminderSection
-                label="עתידיות"
+                label={t("upcoming")}
                 tone="muted"
                 items={upcoming}
               />
             )}
             {done.length > 0 && (
               <ReminderSection
-                label="היסטוריה"
+                label={t("history")}
                 tone="muted"
                 items={done}
               />

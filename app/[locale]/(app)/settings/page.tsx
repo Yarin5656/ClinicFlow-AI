@@ -5,13 +5,19 @@ import { prisma } from "@/lib/db/prisma"
 import { PageHero } from "@/components/layout/PageHero"
 import { Card } from "@/components/ui/Card"
 import { ProfileForm } from "@/components/settings/ProfileForm"
+import { getTranslations } from "next-intl/server"
 
-export const metadata = { title: "הגדרות — ClinicFlow AI" }
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: "settings" })
+  return { title: `${t("title")} — ClinicFlow AI` }
+}
 
-export default async function SettingsPage() {
+export default async function SettingsPage({ params }: { params: { locale: string } }) {
   const session = await getServerSession(authOptions)
   const userId = (session?.user as { id?: string } | undefined)?.id
-  if (!userId) redirect("/login")
+  if (!userId) redirect(`/${params.locale}/login`)
+
+  const t = await getTranslations({ locale: params.locale, namespace: "settings" })
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -23,14 +29,14 @@ export default async function SettingsPage() {
       birthDate: true,
     },
   })
-  if (!user) redirect("/login")
+  if (!user) redirect(`/${params.locale}/login`)
 
   return (
     <div className="flex-1 overflow-auto">
       <PageHero
-        eyebrow="הפרופיל האישי"
-        title="הפרטים שלך"
-        subtitle="הפרטים שלך לחשבון הקליניקה"
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
       <div className="max-w-2xl mx-auto px-6 lg:px-8 py-8 lg:py-10 flex flex-col gap-5">
@@ -58,10 +64,10 @@ export default async function SettingsPage() {
           </div>
           <div className="mb-5">
             <h2 className="font-display text-lg font-bold text-[var(--color-text)] mb-1">
-              פרטים אישיים
+              {t("personalDetails")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              הפרטים שלך — שם, אימייל וטלפון — מופיעים בפרופיל הקליניקה.
+              {t("detailsDesc")}
             </p>
           </div>
           <ProfileForm defaults={user} />
@@ -77,11 +83,10 @@ export default async function SettingsPage() {
             </span>
             <div className="text-sm leading-relaxed">
               <strong className="block text-[var(--color-text)] mb-1">
-                פרטיות
+                {t("privacyTitle")}
               </strong>
               <span className="text-muted-foreground">
-                המידע שלך נשמר מקומית במסד הנתונים שלנו ולא משותף עם אף גוף
-                חיצוני. הסיסמה מוצפנת. המסמכים שלך נגישים רק לך.
+                {t("privacyDesc")}
               </span>
             </div>
           </div>

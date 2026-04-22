@@ -9,7 +9,7 @@ import { ExtractFieldsForm } from "@/components/documents/ExtractFieldsForm"
 import { findDocType } from "@/lib/documents/docTypes"
 
 interface Props {
-  params: { id: string }
+  params: { locale: string; id: string }
 }
 
 export const metadata = { title: "פרטי מסמך — ClinicFlow AI" }
@@ -23,7 +23,7 @@ function formatSize(bytes: number): string {
 export default async function DocumentDetailPage({ params }: Props) {
   const session = await getServerSession(authOptions)
   const userId = (session?.user as { id?: string } | undefined)?.id
-  if (!userId) redirect("/login")
+  if (!userId) redirect(`/${params.locale}/login`)
 
   const doc = await prisma.document.findUnique({
     where: { id: params.id },
@@ -32,7 +32,7 @@ export default async function DocumentDetailPage({ params }: Props) {
     },
   })
   if (!doc) notFound()
-  if (doc.userId !== userId) redirect("/documents")
+  if (doc.userId !== userId) redirect(`/${params.locale}/documents`)
 
   const docType = findDocType(doc.docType)
   const fields = (doc.extractedFields as Record<string, string | number | null> | null) ?? null

@@ -11,10 +11,10 @@ import { UploadZone } from "@/components/documents/UploadZone"
 
 export const metadata = { title: "מסמכים — ClinicFlow AI" }
 
-export default async function DocumentsPage() {
+export default async function DocumentsPage({ params }: { params: { locale: string } }) {
   const session = await getServerSession(authOptions)
   const userId = (session?.user as { id?: string } | undefined)?.id
-  if (!userId) redirect("/login")
+  if (!userId) redirect(`/${params.locale}/login`)
 
   const documents = await prisma.document.findMany({
     where: { userId },
