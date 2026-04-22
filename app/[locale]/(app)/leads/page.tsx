@@ -36,7 +36,7 @@ export default async function LeadsPage({ params }: { params: { locale: string }
         <NewLeadModal locale={params.locale} />
       </div>
 
-      <div className="bg-surface-raised rounded-2xl border border-border overflow-hidden shadow-card">
+      <div className="bg-surface-raised rounded-2xl border border-border shadow-card">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-[var(--color-surface)]">
