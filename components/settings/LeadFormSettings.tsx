@@ -56,9 +56,10 @@ export function LeadFormSettings({ initialSlug, initialConfig }: Props) {
   }
 
   function copyLink() {
-    navigator.clipboard.writeText(publicUrl)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    navigator.clipboard.writeText(publicUrl).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }).catch(() => {})
   }
 
   const fieldLabels: Record<OptionalField, string> = {
@@ -71,22 +72,30 @@ export function LeadFormSettings({ initialSlug, initialConfig }: Props) {
   return (
     <form onSubmit={save} className="flex flex-col gap-5">
       {/* Active toggle */}
-      <label className="flex items-center gap-3 cursor-pointer">
+      <label className="flex items-center gap-3 cursor-pointer" htmlFor="lead-form-active">
         <div
-          onClick={() => setActive(v => !v)}
           className={`relative w-11 h-6 rounded-full transition-colors ${active ? "bg-[var(--color-highlight)]" : "bg-border"}`}
+          aria-hidden="true"
         >
           <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${active ? "right-0.5" : "left-0.5"}`} />
         </div>
+        <input
+          id="lead-form-active"
+          type="checkbox"
+          className="sr-only"
+          checked={active}
+          onChange={e => setActive(e.target.checked)}
+        />
         <span className="text-sm font-medium text-[var(--color-text)]">{t("activeLabel")}</span>
       </label>
 
       {/* Slug */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-[var(--color-text)]">{t("slugLabel")}</label>
+        <label htmlFor="lead-form-slug" className="text-sm font-medium text-[var(--color-text)]">{t("slugLabel")}</label>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground shrink-0">{t("slugHint")}</span>
           <input
+            id="lead-form-slug"
             required
             className="h-9 flex-1 rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             placeholder={t("slugPlaceholder")}
@@ -110,8 +119,9 @@ export function LeadFormSettings({ initialSlug, initialConfig }: Props) {
 
       {/* Title */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-[var(--color-text)]">{t("titleLabel")}</label>
+        <label htmlFor="lead-form-title" className="text-sm font-medium text-[var(--color-text)]">{t("titleLabel")}</label>
         <input
+          id="lead-form-title"
           required
           className="h-9 w-full rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           placeholder={t("titlePlaceholder")}
@@ -122,8 +132,9 @@ export function LeadFormSettings({ initialSlug, initialConfig }: Props) {
 
       {/* Subtitle */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-[var(--color-text)]">{t("subtitleLabel")}</label>
+        <label htmlFor="lead-form-subtitle" className="text-sm font-medium text-[var(--color-text)]">{t("subtitleLabel")}</label>
         <input
+          id="lead-form-subtitle"
           className="h-9 w-full rounded-md border border-border bg-surface px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           placeholder={t("subtitlePlaceholder")}
           value={subtitle}
