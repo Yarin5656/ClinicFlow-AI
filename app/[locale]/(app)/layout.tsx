@@ -5,11 +5,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen overflow-hidden bg-surface">
       <Sidebar />
-      <main className="flex-1 flex flex-col overflow-hidden relative">
-        <div className="absolute top-5 left-6 z-20">
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <div className="h-14 shrink-0 flex items-center justify-end px-6 border-b border-border bg-surface">
           <ReminderBell />
         </div>
-        {children}
+        <div className="flex-1 overflow-auto">
+          {children}
+        </div>
       </main>
     </div>
   )

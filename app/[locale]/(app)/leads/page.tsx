@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth/auth"
 import { prisma } from "@/lib/db/prisma"
 import { Link } from "@/lib/i18n/navigation"
 import { getTranslations } from "next-intl/server"
+import { NewLeadModal } from "@/components/leads/NewLeadModal"
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   const t = await getTranslations({ locale: params.locale, namespace: "leads" })
@@ -38,13 +39,7 @@ export default async function LeadsPage({ params }: { params: { locale: string }
     <div className="flex-1 overflow-auto bg-[var(--color-surface)] p-6 lg:p-8" dir={params.locale === "he" ? "rtl" : "ltr"}>
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-display text-2xl font-bold text-[var(--color-text)]">{t("title")}</h1>
-        <Link
-          href="/leads"
-          className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
-          style={{ background: "var(--color-highlight)" }}
-        >
-          {t("newLead")}
-        </Link>
+        <NewLeadModal locale={params.locale} />
       </div>
 
       <div className="bg-surface-raised rounded-2xl border border-border overflow-hidden shadow-card">
