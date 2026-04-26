@@ -75,9 +75,9 @@ export default async function DashboardPage({ params }: { params: { locale: stri
 
   return (
     <div className="flex-1 overflow-auto bg-[var(--color-surface)] p-6 lg:p-8" dir={params.locale === "he" ? "rtl" : "ltr"}>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between mb-6 gap-4">
         <div>
-          <h1 className="font-display text-2xl font-bold text-[var(--color-text)]">
+          <h1 className="font-display text-xl md:text-2xl font-bold text-[var(--color-text)]">
             {t("greeting", { name: firstName })} 👋
           </h1>
           <p className="text-sm text-[var(--color-muted-fg)] mt-1">
@@ -86,7 +86,7 @@ export default async function DashboardPage({ params }: { params: { locale: stri
         </div>
         <Link
           href="/leads"
-          className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
+          className="shrink-0 px-4 py-2 rounded-lg text-sm font-semibold text-white"
           style={{ background: "var(--color-highlight)" }}
         >
           {t("newLead")}
@@ -110,7 +110,8 @@ export default async function DashboardPage({ params }: { params: { locale: stri
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <h2 className="font-semibold text-sm text-[var(--color-muted-fg)] uppercase tracking-wide mb-3">{t("recentLeads")}</h2>
-          <div className="bg-surface-raised rounded-2xl border border-border overflow-hidden shadow-card">
+          {/* Desktop table */}
+          <div className="hidden md:block bg-surface-raised rounded-2xl border border-border overflow-hidden shadow-card">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-[var(--color-surface)]">
@@ -146,6 +147,32 @@ export default async function DashboardPage({ params }: { params: { locale: stri
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile card list */}
+          <div className="md:hidden flex flex-col gap-2">
+            {recentLeads.map((lead) => (
+              <Link
+                key={lead.id}
+                href={`/leads/${lead.id}`}
+                className="bg-surface-raised rounded-xl border border-border shadow-card px-4 py-3 flex items-center justify-between gap-3"
+              >
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm text-[var(--color-text)] truncate">{lead.client.name}</p>
+                  <p className="text-xs text-[var(--color-muted-fg)] truncate">
+                    {lead.client.treatmentWanted ?? lead.client.source ?? "—"}
+                  </p>
+                </div>
+                <span className={`shrink-0 inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${STATUS_CLASSES[lead.status] ?? ""}`}>
+                  {tStatus(lead.status)}
+                </span>
+              </Link>
+            ))}
+            {recentLeads.length === 0 && (
+              <div className="bg-surface-raised rounded-xl border border-border px-4 py-8 text-center text-sm text-[var(--color-muted-fg)]">
+                {t("noLeads")} — <Link href="/leads" className="underline">{t("addFirstLead")}</Link>
+              </div>
+            )}
           </div>
         </div>
 

@@ -20,7 +20,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className="w-60 shrink-0 flex flex-col h-full relative overflow-hidden"
+      className="hidden md:flex w-60 shrink-0 flex-col h-full relative overflow-hidden"
       style={{
         background: "linear-gradient(180deg, oklch(22% 0.07 245) 0%, oklch(18% 0.06 245) 100%)",
         color: "var(--color-primary-fg)",

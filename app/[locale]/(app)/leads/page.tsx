@@ -36,7 +36,8 @@ export default async function LeadsPage({ params }: { params: { locale: string }
         <NewLeadModal locale={params.locale} />
       </div>
 
-      <div className="bg-surface-raised rounded-2xl border border-border shadow-card">
+      {/* Desktop table */}
+      <div className="hidden md:block bg-surface-raised rounded-2xl border border-border shadow-card">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-[var(--color-surface)]">
@@ -74,6 +75,39 @@ export default async function LeadsPage({ params }: { params: { locale: string }
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile card list */}
+      <div className="md:hidden flex flex-col gap-3">
+        {leads.map((lead) => (
+          <div key={lead.id} className="bg-surface-raised rounded-2xl border border-border shadow-card overflow-hidden">
+            <div className="flex items-start justify-between px-4 pt-4 pb-2 gap-3">
+              <Link href={`/leads/${lead.id}`} className="font-semibold text-base text-[var(--color-text)]">
+                {lead.client.name}
+              </Link>
+              <LeadStatusBadge leadId={lead.id} status={lead.status as any} />
+            </div>
+            <div className="px-4 pb-3 flex flex-col gap-1">
+              <p className="text-sm text-[var(--color-muted-fg)]" dir="ltr">{lead.client.phone}</p>
+              {lead.client.treatmentWanted && (
+                <p className="text-sm text-[var(--color-muted-fg)]">{lead.client.treatmentWanted}</p>
+              )}
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-xs text-[var(--color-muted-fg)]">
+                  {lead.client.source ?? "—"}
+                </span>
+                <span className="text-xs text-[var(--color-muted-fg)]">
+                  {lead.createdAt.toLocaleDateString(dateLocale)}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+        {leads.length === 0 && (
+          <div className="bg-surface-raised rounded-2xl border border-border shadow-card px-4 py-10 text-center text-[var(--color-muted-fg)]">
+            {t("noLeads")}
+          </div>
+        )}
       </div>
     </div>
   )

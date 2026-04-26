@@ -76,9 +76,11 @@ export function NewLeadModal({ locale }: Props) {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" dir={dir}>
+        <div className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center md:p-4" dir={dir}>
           <div className="absolute inset-0 bg-black/50" onClick={close} />
-          <div className="relative w-full max-w-md bg-surface-raised rounded-2xl border border-border shadow-card p-6">
+          <div className="relative w-full md:max-w-md bg-surface-raised rounded-t-2xl md:rounded-2xl border border-border shadow-card p-6 pb-safe"
+            style={{ paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
+          >
             <h2 className="font-display text-xl font-bold text-[var(--color-text)] mb-5">
               {t("newLead")}
             </h2>
@@ -112,7 +114,7 @@ export function NewLeadModal({ locale }: Props) {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-[var(--color-text)]">{t("source")}</label>
                   <input
