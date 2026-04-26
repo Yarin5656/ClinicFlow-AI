@@ -33,7 +33,12 @@ model User {
   tasks      Task[]
   documents  Document[]
   reminders  Reminder[]
-  clients    Client[]
+  clients           Client[]
+  serviceCategories ServiceCategory[]
+  services          Service[]
+  locations         Location[]
+  staffMembers      StaffMember[]
+  formTemplate      FormTemplate?
 }
 
 // ─── Move Context ─────────────────────────────────────────────────
@@ -191,6 +196,107 @@ model Reminder {
   client Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
 }
 
+// ─── ClinicFlow: Services ─────────────────────────────────────────
+
+model ServiceCategory {
+  id           String    @id @default(cuid())
+  userId       String
+  name         String
+  displayOrder Int       @default(0)
+  createdAt    DateTime  @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services Service[]
+
+  @@index([userId])
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  userId       String
+  categoryId   String?
+  name         String
+  description  String?
+  priceType    String   @default("hidden")
+  priceValue   Int?
+  durationMin  Int?
+  isActive     Boolean  @default(true)
+  isBookable   Boolean  @default(false)
+  staffId      String?
+  locationId   String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category ServiceCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  staff    StaffMember?     @relation(fields: [staffId], references: [id], onDelete: SetNull)
+  location Location?        @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  leads    Lead[]
+
+  @@index([userId])
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  address   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services Service[]
+
+  @@index([userId])
+}
+
+model StaffMember {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  role      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services Service[]
+
+  @@index([userId])
+}
+
+model FormTemplate {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  title     String
+  subtitle  String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fields FormField[]
+}
+
+model FormField {
+  id           String   @id @default(cuid())
+  templateId   String
+  type         String
+  key          String
+  label        String
+  placeholder  String?
+  isRequired   Boolean  @default(false)
+  isCore       Boolean  @default(false)
+  displayOrder Int      @default(0)
+  options      Json?
+  conditions   Json?
+  createdAt    DateTime @default(now())
+
+  template FormTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId])
+}
+
 // ─── ClinicFlow: Clients & Leads ─────────────────────────────────
 
 model Client {
@@ -213,19 +319,22 @@ model Client {
 }
 
 model Lead {
-  id        String   @id @default(cuid())
-  clientId  String
+  id          String   @id @default(cuid())
+  clientId    String
+  serviceId   String?
   // LeadStatus stored as string for consistency with Task.status pattern.
   // Valid values: "NEW" | "FOLLOW_UP" | "QUOTED" | "BOOKED" | "WON" | "LOST"
   // Enforced by Zod at the API boundary and by TypeScript types.
-  status    String   @default("NEW")
-  aiSummary String?
-  aiTags    String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status      String   @default("NEW")
+  aiSummary   String?
+  aiTags      String[]
+  formAnswers Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  tasks  Task[]
+  client  Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  tasks   Task[]
 
   @@index([clientId])
 }
