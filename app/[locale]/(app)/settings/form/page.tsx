@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth/auth"
 import { prisma } from "@/lib/db/prisma"
 import { FormBuilder } from "@/components/settings/FormBuilder"
+import { SlugEditor } from "@/components/settings/SlugEditor"
 
 export default async function FormSettingsPage({ params }: { params: { locale: string } }) {
   const session = await getServerSession(authOptions)
@@ -22,20 +23,8 @@ export default async function FormSettingsPage({ params }: { params: { locale: s
 
   return (
     <div className="p-6 lg:p-8" dir="rtl">
-      <div className="flex items-start justify-between mb-6 gap-4">
-        <h1 className="font-display text-2xl font-bold text-[var(--color-text)]">טופס לידים</h1>
-        {slug && (
-          <a
-            href={`${baseUrl}/f/${slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 text-sm underline"
-            style={{ color: "var(--color-highlight)" }}
-          >
-            צפה בטופס ↗
-          </a>
-        )}
-      </div>
+      <h1 className="font-display text-2xl font-bold text-[var(--color-text)] mb-6">טופס לידים</h1>
+      <SlugEditor slug={slug ?? null} baseUrl={baseUrl} />
       <FormBuilder
         templateId={template?.id ?? null}
         fields={template?.fields ?? []}
