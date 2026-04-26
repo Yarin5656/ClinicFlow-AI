@@ -68,7 +68,6 @@ async function main() {
       {
         templateId: template.id, type: "textarea", key: "notes",
         label: "הערות נוספות", placeholder: "כל פרט שחשוב לנו לדעת...", isRequired: false, displayOrder: 2,
-        conditions: null, options: null,
       },
     ],
   })
