@@ -11,72 +11,79 @@ export async function POST(
 ) {
   const ip = req.headers.get("x-forwarded-for") ?? "unknown"
   const { allowed } = checkRateLimit(`lead-form:${ip}`, 5, 10 * 60 * 1000)
-  if (!allowed) {
-    return NextResponse.json({ error: "נסה שוב מאוחר יותר" }, { status: 429 })
-  }
+  if (!allowed) return NextResponse.json({ error: "נסה שוב מאוחר יותר" }, { status: 429 })
 
   const user = await prisma.user.findUnique({
     where: { leadFormSlug: params.slug },
-    select: { id: true, email: true, name: true, leadFormConfig: true },
+    select: {
+      id: true, email: true, name: true, leadFormConfig: true,
+      formTemplate: { select: { isActive: true, title: true } },
+    },
   })
-
   if (!user) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
-  const config = user.leadFormConfig as LeadFormConfig | null
-  if (!config?.active) return NextResponse.json({ error: "Not found" }, { status: 404 })
+  const hasNewTemplate = user.formTemplate?.isActive
+  const legacyConfig = user.leadFormConfig as LeadFormConfig | null
+  if (!hasNewTemplate && !legacyConfig?.active) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 })
+  }
 
   let body: unknown
-  try {
-    body = await req.json()
-  } catch {
+  try { body = await req.json() } catch {
     return NextResponse.json({ error: "בקשה לא תקינה" }, { status: 400 })
   }
 
   const parsed = publicSubmitSchema.safeParse(body)
   if (!parsed.success) {
-    const firstIssue = parsed.error.issues[0]
-    return NextResponse.json({ error: firstIssue?.message ?? "נתונים לא תקינים" }, { status: 400 })
+    return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "נתונים לא תקינים" }, { status: 400 })
   }
 
-  const { name, phone, treatment, source, message } = parsed.data
+  const { name, phone, serviceId, treatment, source, message, answers } = parsed.data
 
-  const { client, lead } = await prisma.$transaction(async (tx) => {
+  if (serviceId) {
+    const service = await prisma.service.findFirst({ where: { id: serviceId, userId: user.id, isActive: true } })
+    if (!service) return NextResponse.json({ error: "שירות לא נמצא" }, { status: 400 })
+  }
+
+  const { lead } = await prisma.$transaction(async (tx) => {
     const client = await tx.client.create({
       data: {
         userId: user.id,
         name,
         phone,
-        source: source ?? "טופס רשתות חברתיות",
+        source: source ?? "טופס אונליין",
         treatmentWanted: treatment,
         notes: message,
       },
     })
     const lead = await tx.lead.create({
-      data: { clientId: client.id, status: "NEW" },
+      data: {
+        clientId: client.id,
+        status: "NEW",
+        serviceId: serviceId ?? null,
+        formAnswers: Object.keys(answers).length > 0 ? (answers as any) : undefined,
+      },
     })
     return { client, lead }
   })
 
-  try {
-    await generateFollowUpTasksForLead(user.id, lead.id, "lead-intake")
-  } catch (e) {
+  try { await generateFollowUpTasksForLead(user.id, lead.id, "lead-intake") } catch (e) {
     console.error("[lead-form] workflow error", e)
   }
 
+  const formTitle = user.formTemplate?.title ?? (legacyConfig?.title ?? "טופס")
   try {
     const baseUrl = process.env.NEXTAUTH_URL ?? "https://clinicflow-ai-xi.vercel.app"
     await sendLeadNotification({
       toEmail: user.email,
-      clinicName: config.title,
+      clinicName: formTitle,
       clientName: name,
       phone,
       treatment,
       message,
       leadsUrl: `${baseUrl}/he/leads`,
     })
-  } catch {
-    // best-effort — lead is saved
-  }
+  } catch { /* best-effort */ }
 
   return NextResponse.json({ ok: true }, { status: 201 })
 }
