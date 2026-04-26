@@ -2,6 +2,7 @@
 
 import { usePathname, Link } from "@/lib/i18n/navigation"
 import { useTranslations } from "next-intl"
+import { signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
 import { LanguageSwitcher } from "./LanguageSwitcher"
 
@@ -86,13 +87,13 @@ export function Sidebar() {
       <div className="relative border-t border-white/10">
         <LanguageSwitcher />
         <div className="px-3 pb-3">
-          <Link
-            href="/api/auth/signout"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+          <button
+            onClick={() => signOut({ callbackUrl: '/he/login' })}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors w-full"
           >
             <span className="font-mono text-base leading-none w-5 text-center opacity-70" aria-hidden>←</span>
             <span>{t("logout")}</span>
-          </Link>
+          </button>
         </div>
       </div>
     </aside>
