@@ -3,12 +3,15 @@
 import { usePathname, Link } from "@/lib/i18n/navigation"
 import { useTranslations } from "next-intl"
 import { signOut } from "next-auth/react"
+import { useParams } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { LanguageSwitcher } from "./LanguageSwitcher"
 
 export function Sidebar() {
   const t = useTranslations("sidebar")
   const pathname = usePathname()
+  const params = useParams()
+  const locale = (params?.locale as string) ?? "he"
 
   const navItems = [
     { href: "/dashboard", label: t("dashboard"), icon: "◉" },
@@ -88,7 +91,7 @@ export function Sidebar() {
         <LanguageSwitcher />
         <div className="px-3 pb-3">
           <button
-            onClick={() => signOut({ callbackUrl: '/he/login' })}
+            onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors w-full"
           >
             <span className="font-mono text-base leading-none w-5 text-center opacity-70" aria-hidden>←</span>

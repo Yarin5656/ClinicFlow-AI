@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
@@ -12,9 +12,8 @@ import { useTranslations } from "next-intl"
 
 export function LoginForm({ locale }: { locale?: string }) {
   const t = useTranslations("auth")
-  const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard"
+  const callbackUrl = searchParams.get("callbackUrl") ?? (locale ? `/${locale}/dashboard` : "/dashboard")
   const [serverError, setServerError] = useState<string | null>(null)
 
   const {
@@ -40,8 +39,8 @@ export function LoginForm({ locale }: { locale?: string }) {
       return
     }
 
-    router.push(callbackUrl)
-    router.refresh()
+    // Full page navigation clears stale Next.js router cache from any previous user session
+    window.location.href = callbackUrl
   }
 
   return (
