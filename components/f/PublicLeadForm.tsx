@@ -111,6 +111,7 @@ export function PublicLeadForm(props: Props) {
         phone: formState.phone ?? "",
         serviceId: formState.service_id ?? undefined,
         treatment: selectedService?.name ?? undefined,
+        message: (answers.message as string | undefined) || undefined,
         answers,
       }
       const res = await fetch(`/api/public/lead-form/${slug}`, {
