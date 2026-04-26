@@ -23,9 +23,9 @@ export function SlugEditor({ slug: initSlug, baseUrl }: Props) {
     if (!slug.trim()) { setError("נדרש סלאג"); return }
     setSaving(true)
     const res = await fetch("/api/user/lead-form", {
-      method: "PUT",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug, config: { title: "", subtitle: "", fields: [], active: false } }),
+      body: JSON.stringify({ slug }),
     })
     setSaving(false)
     if (!res.ok) {
