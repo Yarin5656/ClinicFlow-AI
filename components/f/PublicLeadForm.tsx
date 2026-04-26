@@ -105,10 +105,12 @@ export function PublicLeadForm(props: Props) {
           answers[f.key] = formState[f.key]
         }
       }
+      const selectedService = services.find(s => s.id === formState.service_id)
       const body = {
         name: formState.name ?? "",
         phone: formState.phone ?? "",
         serviceId: formState.service_id ?? undefined,
+        treatment: selectedService?.name ?? undefined,
         answers,
       }
       const res = await fetch(`/api/public/lead-form/${slug}`, {
