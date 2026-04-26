@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db/prisma"
 import { publicSubmitSchema, type LeadFormConfig } from "@/lib/validations/lead-form"
 import { generateFollowUpTasksForLead } from "@/lib/workflows/leads"
-import { sendLeadNotification } from "@/lib/email/sendLeadNotification"
 import { checkRateLimit } from "@/lib/rateLimit"
 
 export async function POST(
@@ -71,19 +70,16 @@ export async function POST(
     console.error("[lead-form] workflow error", e)
   }
 
-  const formTitle = user.formTemplate?.title ?? (legacyConfig?.title ?? "טופס")
-  try {
-    const baseUrl = process.env.NEXTAUTH_URL ?? "https://clinicflow-ai-xi.vercel.app"
-    await sendLeadNotification({
-      toEmail: user.email,
-      clinicName: formTitle,
-      clientName: name,
-      phone,
-      treatment,
-      message,
-      leadsUrl: `${baseUrl}/he/leads`,
-    })
-  } catch { /* best-effort */ }
+  const webhookUrl = process.env.MAKE_WEBHOOK_URL
+  if (webhookUrl) {
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, treatment: treatment ?? "", message: message ?? "" }),
+      })
+    } catch { /* best-effort */ }
+  }
 
   return NextResponse.json({ ok: true }, { status: 201 })
 }
