@@ -22,10 +22,12 @@ export const saveLeadFormSchema = z.object({
 export const publicSubmitSchema = z.object({
   name: z.string().min(2, "שם חובה"),
   phone: z.string().min(7, "טלפון חובה"),
+  serviceId: z.string().optional(),
   treatment: z.string().max(200).optional(),
   source: z.string().max(100).optional(),
   message: z.string().max(1000).optional(),
   preferredDate: z.string().optional(),
+  answers: z.record(z.string(), z.unknown()).default({}),
 })
 
 export type LeadFormConfig = z.infer<typeof leadFormConfigSchema>
